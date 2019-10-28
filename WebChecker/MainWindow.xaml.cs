@@ -23,6 +23,9 @@ namespace WebChecker
         public MainWindow()
         {
             InitializeComponent();
+            WebCheck webCheck = new WebCheck(@"https://www.anysoft.pl/razem-taniej-zestaw-must-have-total-commander-winrar-the-bat-snagit");
+            var temp = webCheck.FindProduct(@"//h1[@class='name']", @"//price[@id='prCurrent']");
+            
         }
     }
 }
