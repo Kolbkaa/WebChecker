@@ -17,6 +17,8 @@ namespace WebChecker.Model
         private readonly Queue<string> _linkToCheck;
         private readonly List<string> _linkChecked;
 
+        public event Action<int, int, int> OneLinkCheck;
+        public event Action<int, int, int> AllLinkCheck;
 
         public PageToCheck(string webUrl, string nameProductPosition, string priceProductPosition)
         {
@@ -34,14 +36,15 @@ namespace WebChecker.Model
 
         public void Check()
         {
-            var timeStart = DateTime.Now;
             do
             {
                 var link = _linkToCheck.Dequeue();
+
                 if (!_linkChecked.Contains(link))
                 {
                     var webCheck = new WebCheck(link);
                     var linkList = webCheck.FindLinkOnWeb();
+
                     if (linkList != null)
                     {
                         linkList = PrepareLink(linkList);
@@ -50,15 +53,18 @@ namespace WebChecker.Model
                             _linkToCheck.Enqueue(l);
                         }
                     }
-                    var product = webCheck.FindProduct(_webNameProductPosition, _webPriceProductPosition);
+
+                    var product = webCheck.FindProduct(link, _webNameProductPosition, _webPriceProductPosition);
+
                     if (product != null) Product.Add(link, product);
                 }
                 _linkChecked.Add(link);
-                //Debug.WriteLine($"LinkToCheck: {_linkToCheck.Count}, LinkChecked:{_linkChecked.Count},ProductList:{_product.Count}, LINK: {link}");
+
+                OneLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count);
 
             } while (_linkToCheck.Count > 0);
-            Debug.WriteLine((DateTime.Now - timeStart));
-            Debug.WriteLine($"LinkToCheck: {_linkToCheck.Count}, LinkChecked:{_linkChecked.Count},ProductList:{Product.Count}");
+
+            AllLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count);
         }
         private List<string> PrepareLink(IEnumerable<string> urlList)
         {

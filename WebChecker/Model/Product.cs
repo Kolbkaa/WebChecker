@@ -7,10 +7,11 @@ namespace WebChecker.Model
     {
         private string _price;
 
-        public Product(string name, string price)
+        public Product(string link, string name, string price)
         {
             Name = name;
             Price = price;
+            Link = link;
         }
 
         private sealed class PriceNameEqualityComparer : IEqualityComparer<Product>
@@ -44,5 +45,6 @@ namespace WebChecker.Model
                 _price = new string(value.Where(x=> (char.IsDigit(x) || x == ',' || x=='.')).ToArray()).Replace(",",".");
             }
         }
+        public string Link { get; private set; }
     }
 }

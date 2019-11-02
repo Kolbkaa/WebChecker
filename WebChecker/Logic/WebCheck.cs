@@ -15,7 +15,9 @@ namespace WebChecker
         public WebCheck(string pageToCheck)
         {
             _pageToCheck = pageToCheck;
+
             var web = new HtmlWeb();
+
             LoadWebPage(pageToCheck, web);
 
         }
@@ -25,20 +27,21 @@ namespace WebChecker
             _htmlDoc = web.Load(pageToCheck);
         }
 
-        public List<string> FindLinkOnWeb()
+        public IEnumerable<string> FindLinkOnWeb()
         {
 
-            //if (_htmlDoc != null)
-            //{
-            //    var at = _htmlDoc.DocumentNode?.SelectNodes("//meta").Select(x => x.Attributes)?.Select(x => x.Select(z => z)?.Where(z => z.Value == "robots")); ;
-            //    //var robot = at.Select(x => x.Select(z=> z.Name));
-            //}
-
             if (_htmlDoc == null) return null;
-            var attrib = _htmlDoc.DocumentNode?.SelectNodes("//a")?.Select(x => x.Attributes);
-            var hrefAttrib = attrib?.Select(x => x.Select(z => z)?.Where(z => z.Name == "href"));
-            var date = hrefAttrib?.Select(y => y.Select(z => z.Value)?.FirstOrDefault()).ToList();
-            return date;
+
+            //var attrib = _htmlDoc.DocumentNode?.SelectNodes("//a")?.Select(x => x.Attributes);
+            //var hrefAttrib = attrib?.Select(x => x.Select(z => z)?.Where(z => z.Name == "href"));
+            //var date = hrefAttrib?.Select(y => y.Select(z => z.Value)?.FirstOrDefault()).ToList();
+
+            var attrib = _htmlDoc.DocumentNode?.SelectNodes("//a")
+                ?.Select(x => x.Attributes.SingleOrDefault(z => z.Name == "href"))?.Where(x=>x != null)?.Select(x=>x.Value).ToList();
+
+            //var hrefAttrib = attrib?.Select(x => x.Select(z => z)?.Where(z => z.Name == "href"));
+            //var date = hrefAttrib?.Select(y => y.Select(z => z.Value)?.FirstOrDefault()).ToList();
+            return attrib;
         }
         public Product FindProduct(string xPathName, string xPathPrice)
         {
