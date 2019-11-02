@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebChecker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" >
+    
+
     <Grid>
-        
+        <DataGrid x:Name="DataGrid" HorizontalAlignment="Left" Height="399" Margin="10,10,0,0" VerticalAlignment="Top" Width="641" ItemsSource="{Binding Path=Products}"/>
+        <Button Content="Sprawdź" HorizontalAlignment="Left" Margin="656,10,0,0" VerticalAlignment="Top" Width="128" Height="40" Click="Button_Click"/>
+
     </Grid>
 </Window>

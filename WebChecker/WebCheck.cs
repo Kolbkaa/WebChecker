@@ -8,16 +8,16 @@ using WebChecker.Model;
 
 namespace WebChecker
 {
-    class WebCheck
+    internal class WebCheck
     {
         private readonly string _pageToCheck;
         private HtmlDocument _htmlDoc;
         public WebCheck(string pageToCheck)
         {
             _pageToCheck = pageToCheck;
-            HtmlWeb web = new HtmlWeb();
+            var web = new HtmlWeb();
             LoadWebPage(pageToCheck, web);
-            
+
         }
 
         private void LoadWebPage(string pageToCheck, HtmlWeb web)
@@ -27,12 +27,18 @@ namespace WebChecker
 
         public List<string> FindLinkOnWeb()
         {
-            if (_htmlDoc != null)
-            {
-                var date = _htmlDoc.DocumentNode?.SelectNodes("//a")?.Select(x => x.Attributes)?.Select(x => x.Select(z => z)?.Where(z => z.Name == "href")).Select(y => y.Select(z => z.Value).First()).ToList();
-                return date;
-            }
-            return null;
+
+            //if (_htmlDoc != null)
+            //{
+            //    var at = _htmlDoc.DocumentNode?.SelectNodes("//meta").Select(x => x.Attributes)?.Select(x => x.Select(z => z)?.Where(z => z.Value == "robots")); ;
+            //    //var robot = at.Select(x => x.Select(z=> z.Name));
+            //}
+
+            if (_htmlDoc == null) return null;
+            var attrib = _htmlDoc.DocumentNode?.SelectNodes("//a")?.Select(x => x.Attributes);
+            var hrefAttrib = attrib?.Select(x => x.Select(z => z)?.Where(z => z.Name == "href"));
+            var date = hrefAttrib?.Select(y => y.Select(z => z.Value)?.FirstOrDefault()).ToList();
+            return date;
         }
         public Product FindProduct(string xPathName, string xPathPrice)
         {

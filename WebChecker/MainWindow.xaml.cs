@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WebChecker.Model;
+using WebChecker.ViewModel;
 
 namespace WebChecker
 {
@@ -20,12 +23,25 @@ namespace WebChecker
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainViewModel mainViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
-            WebCheck webCheck = new WebCheck(@"https://www.anysoft.pl/razem-taniej-zestaw-must-have-total-commander-winrar-the-bat-snagit");
-            var temp = webCheck.FindProduct(@"//h1[@class='name']", @"//price[@id='prCurrent']");
-            
+
+            mainViewModel = new MainViewModel();
+            DataGrid.DataContext = mainViewModel;
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var pageToCheck = new PageToCheck(@"https://www.anysoft.pl/", @"//h1[@class='name']", @"//price[@id='prCurrent']");
+            pageToCheck.Check();
+            var product = pageToCheck.Product.Values;
+            mainViewModel.LoadProduct(product.Distinct(Product.PriceNameComparer));
+
+
         }
     }
 }
