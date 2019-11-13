@@ -29,25 +29,19 @@ namespace WebChecker
 
         public IEnumerable<string> FindLinkOnWeb()
         {
+            var linkOnWeb = _htmlDoc?.DocumentNode?.SelectNodes("//a")
+                ?.Select(x => x.Attributes.SingleOrDefault(z => z.Name == "href"))?.Where(x => x != null)?.Select(x => x.Value).ToList();
 
-            if (_htmlDoc == null) return null;
-
-            //var attrib = _htmlDoc.DocumentNode?.SelectNodes("//a")?.Select(x => x.Attributes);
-            //var hrefAttrib = attrib?.Select(x => x.Select(z => z)?.Where(z => z.Name == "href"));
-            //var date = hrefAttrib?.Select(y => y.Select(z => z.Value)?.FirstOrDefault()).ToList();
-
-            var attrib = _htmlDoc.DocumentNode?.SelectNodes("//a")
-                ?.Select(x => x.Attributes.SingleOrDefault(z => z.Name == "href"))?.Where(x=>x != null)?.Select(x=>x.Value).ToList();
-
-            //var hrefAttrib = attrib?.Select(x => x.Select(z => z)?.Where(z => z.Name == "href"));
-            //var date = hrefAttrib?.Select(y => y.Select(z => z.Value)?.FirstOrDefault()).ToList();
-            return attrib;
+            return linkOnWeb;
         }
-        public Product FindProduct(string xPathName, string xPathPrice)
+        public Product FindProduct(string xPathName, string xPathPrice, string link)
         {
-            var price = _htmlDoc.DocumentNode?.SelectNodes(xPathPrice)?.First().InnerText;
-            var name = _htmlDoc.DocumentNode?.SelectNodes(xPathName)?.First().InnerText;
-            return (!string.IsNullOrWhiteSpace(price) && !string.IsNullOrWhiteSpace(name)) ? new Product(name.Trim(), price.Trim()) : null;
+            var pathName = xPathName;
+            var pricePrice = xPathPrice;
+            var price = _htmlDoc.DocumentNode?.SelectNodes(pricePrice)?.First().InnerText;
+            var name = _htmlDoc.DocumentNode?.SelectNodes(pathName)?.First().InnerText;
+
+            return (!string.IsNullOrWhiteSpace(price) && !string.IsNullOrWhiteSpace(name)) ? new Product(link, name.Trim(), price.Trim()) : null;
         }
     }
 }

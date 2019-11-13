@@ -1,14 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using WebChecker.Annotations;
 
 namespace WebChecker.Model
 {
-    class PageToCheck
+    class PageToCheck : INotifyPropertyChanged
     {
-        private readonly string _webUrl;
+        public string WebUrl { get; }
+        public int LinkToCheckCount => _linkToCheck.Count;
+        public int LinkCheckedCount => _linkChecked.Count;
+        public int AllLink => LinkToCheckCount + LinkCheckedCount;
+        public int ProductCount => Product.Count;
+
+        public StatusEnum Status
+        {
+            get => _status;
+            set
+            {
+                _status = value;
+                OnPropertyChanged(nameof(Status));
+            }
+        }
+
+
         private readonly string _webNameProductPosition;
         private readonly string _webPriceProductPosition;
 
@@ -16,13 +36,14 @@ namespace WebChecker.Model
 
         private readonly Queue<string> _linkToCheck;
         private readonly List<string> _linkChecked;
+        private StatusEnum _status;
 
-        public event Action<int, int, int> OneLinkCheck;
-        public event Action<int, int, int> AllLinkCheck;
+        public event Action<int, int, int, string> OneLinkCheck;
+        public event Action<int, int, int, string> AllLinkCheck;
 
         public PageToCheck(string webUrl, string nameProductPosition, string priceProductPosition)
         {
-            _webUrl = webUrl.EndsWith("/") ? new string(webUrl.Take(webUrl.Length - 1).ToArray()) : webUrl;
+            WebUrl = webUrl.EndsWith("/") ? new string(webUrl.Take(webUrl.Length - 1).ToArray()) : webUrl;
 
             _webNameProductPosition = nameProductPosition;
             _webPriceProductPosition = priceProductPosition;
@@ -36,35 +57,52 @@ namespace WebChecker.Model
 
         public void Check()
         {
-            do
+            Task.Run(() =>
             {
-                var link = _linkToCheck.Dequeue();
-
-                if (!_linkChecked.Contains(link))
+                Status = StatusEnum.Sprawdzanie;
+                do
                 {
-                    var webCheck = new WebCheck(link);
-                    var linkList = webCheck.FindLinkOnWeb();
-
-                    if (linkList != null)
+                    var link = _linkToCheck.Dequeue();
+                    OnPropertyChanged(nameof(LinkCheckedCount));
+                    OnPropertyChanged(nameof(AllLink));
+                    if (!_linkChecked.Contains(link))
                     {
-                        linkList = PrepareLink(linkList);
-                        foreach (var l in linkList.Where(l => !_linkChecked.Contains(l) && !_linkToCheck.Contains(l)))
+                        var webCheck = new WebCheck(link);
+                        var linkList = webCheck.FindLinkOnWeb();
+
+                        if (linkList != null)
                         {
-                            _linkToCheck.Enqueue(l);
+                            linkList = PrepareLink(linkList);
+                            foreach (var l in linkList.Where(l => !_linkChecked.Contains(l) && !_linkToCheck.Contains(l)))
+                            {
+                                _linkToCheck.Enqueue(l);
+
+                            }
+                            OnPropertyChanged(nameof(LinkToCheckCount));
+                            OnPropertyChanged(nameof(AllLink));
+
                         }
+
+                        var product = webCheck.FindProduct(_webPriceProductPosition, _webNameProductPosition, link);
+
+                        if (product != null)
+                        {
+                            Product.Add(link, product);
+                            OnPropertyChanged(nameof(ProductCount));
+                        }
+
                     }
+                    _linkChecked.Add(link);
 
-                    var product = webCheck.FindProduct(link, _webNameProductPosition, _webPriceProductPosition);
+                    OneLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
 
-                    if (product != null) Product.Add(link, product);
-                }
-                _linkChecked.Add(link);
 
-                OneLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count);
 
-            } while (_linkToCheck.Count > 0);
+                } while (_linkToCheck.Count > 0);
 
-            AllLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count);
+                AllLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
+                Status = StatusEnum.Zakończono;
+            });
         }
         private List<string> PrepareLink(IEnumerable<string> urlList)
         {
@@ -73,14 +111,24 @@ namespace WebChecker.Model
             {
                 if (link == null || !link.StartsWith("/")) continue;
 
-                var stringBuilder = new StringBuilder(_webUrl);
+                var stringBuilder = new StringBuilder(WebUrl);
                 stringBuilder.Append(link.Split('?')?.First());
 
-                if (stringBuilder.ToString().Contains(_webUrl))
+                if (stringBuilder.ToString().Contains(WebUrl))
                     newList.Add(stringBuilder.ToString());
             }
             return newList;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        internal enum StatusEnum { Oczekiwanie, Zakończono, Sprawdzanie }
     }
+
 }

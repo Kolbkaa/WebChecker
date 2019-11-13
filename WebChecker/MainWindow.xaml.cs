@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,25 +24,65 @@ namespace WebChecker
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainViewModel mainViewModel;
+        private readonly MainViewModel _mainViewModel;
+        private Mode _mode = Mode.Add;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            mainViewModel = new MainViewModel();
-            DataGrid.DataContext = mainViewModel;
+            _mainViewModel = new MainViewModel();
+            this.DataContext = _mainViewModel;
 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var pageToCheck = new PageToCheck(@"https://www.anysoft.pl/", @"//h1[@class='name']", @"//price[@id='prCurrent']");
-            pageToCheck.Check();
-            var product = pageToCheck.Product.Values;
-            mainViewModel.LoadProduct(product.Distinct(Product.PriceNameComparer));
+            
+            foreach (var website in _mainViewModel.WebsiteCollection)
+            {
+                if (!website.ToCheck) continue;
+                var pageToCheck = new PageToCheck(website.MainUrl, website.NameXPath, website.PriceXPath);
+                _mainViewModel.PageToCheckCollection.Add(pageToCheck);
+                pageToCheck.Check();
+            }
+            
+        }
 
+        private void PageToCheckOnAllLinkCheck(int arg1, int arg2, int arg3, string arg4)
+        {
 
+            Debug.Print($"{arg4}: Product: {arg1}, Link Checked: {arg2}, Link to check: {arg3}");
+        }
+
+        private void AddToCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if (_mode == Mode.Add)
+            {
+                _mainViewModel.AddWebsiteToCollection();
+            }
+            else
+            {
+                _mainViewModel.EditValue();
+                _mode = Mode.Add;
+            }
+
+        }
+
+        private void DeleteValueMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _mainViewModel.DeleteElement(WebsiteDataGrid.SelectedIndex);
+        }
+
+        private void EditValue_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _mode = Mode.Edit;
+            _mainViewModel.LoadEditValue(WebsiteDataGrid.SelectedItem as Website);
+        }
+
+        private enum Mode
+        {
+            Edit, Add
         }
     }
 }
