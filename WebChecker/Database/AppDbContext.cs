@@ -25,5 +25,6 @@ namespace WebChecker.Database
         }
 
         public DbSet<WebsiteEntity> WebsiteEntities { get; set; }
+        public DbSet<ProductEntity> ProductEntity { get; set; }
     }
 }

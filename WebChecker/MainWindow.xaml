@@ -49,6 +49,8 @@
                 <ContextMenu>
                     <MenuItem Header="Usuń" Click="DeleteValueMenuItem_Click" />
                     <MenuItem Header="Edytuj" Click="EditValue_MenuItem_Click" />
+                    <MenuItem Header="Pokaż produkty" Click="Show_MenuItem_Click" />
+                    <MenuItem Header="Pokaż wszystkie produkty" Click="ShowAll_MenuItem_Click" />
                 </ContextMenu>
 
             </DataGrid.ContextMenu>

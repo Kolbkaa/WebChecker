@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using WebChecker.Annotations;
+using WebChecker.Database.Repository;
 
 namespace WebChecker.Model
 {
@@ -83,11 +84,12 @@ namespace WebChecker.Model
 
                         }
 
-                        var product = webCheck.FindProduct(_webPriceProductPosition, _webNameProductPosition, link);
+                        var product = webCheck.FindProduct(_webNameProductPosition, _webPriceProductPosition, link);
 
                         if (product != null)
                         {
-                            Product.Add(link, product);
+                            if (!Product.Values.Any(x => x.Name == product.Name && x.Price == product.Price))
+                                Product.Add(link, product);
                             OnPropertyChanged(nameof(ProductCount));
                         }
 
@@ -102,6 +104,8 @@ namespace WebChecker.Model
 
                 AllLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
                 Status = StatusEnum.Zakończono;
+                var productRepository = new ProductRepository();
+                productRepository.SaveAll(Product);
             });
         }
         private List<string> PrepareLink(IEnumerable<string> urlList)
@@ -112,7 +116,8 @@ namespace WebChecker.Model
                 if (link == null || !link.StartsWith("/")) continue;
 
                 var stringBuilder = new StringBuilder(WebUrl);
-                stringBuilder.Append(link.Split('?')?.First());
+                //stringBuilder.Append(link.Split('?')?.First());
+                stringBuilder.Append(link);
 
                 if (stringBuilder.ToString().Contains(WebUrl))
                     newList.Add(stringBuilder.ToString());

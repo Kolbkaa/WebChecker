@@ -43,6 +43,7 @@ namespace WebChecker
             {
                 if (!website.ToCheck) continue;
                 var pageToCheck = new PageToCheck(website.MainUrl, website.NameXPath, website.PriceXPath);
+                //pageToCheck.OneLinkCheck += PageToCheckOnAllLinkCheck;
                 _mainViewModel.PageToCheckCollection.Add(pageToCheck);
                 pageToCheck.Check();
             }
@@ -71,7 +72,8 @@ namespace WebChecker
 
         private void DeleteValueMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            _mainViewModel.DeleteElement(WebsiteDataGrid.SelectedIndex);
+            var website = WebsiteDataGrid.SelectedItem as Website;
+            _mainViewModel.DeleteElement(website);
         }
 
         private void EditValue_MenuItem_Click(object sender, RoutedEventArgs e)
@@ -83,6 +85,17 @@ namespace WebChecker
         private enum Mode
         {
             Edit, Add
+        }
+
+        private void Show_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var website = WebsiteDataGrid.SelectedItem as Website;
+            new ShowWindow(website).ShowDialog();
+        }
+
+        private void ShowAll_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

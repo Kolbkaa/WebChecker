@@ -55,5 +55,22 @@ namespace WebChecker.Database.Repository
                 dbContext.SaveChanges();
             }
         }
+
+        public void Delete(Website website)
+        {
+            using (var dbContext = new AppDbContext())
+            {
+                dbContext.WebsiteEntities.Remove(new WebsiteEntity()
+                {
+                    Id = website.Id,
+                    CartButtonXPatch = website.CartButtonXPatch,
+                    MainUrl = website.MainUrl,
+                    NameXPath = website.NameXPath,
+                    PriceXPath = website.PriceXPath
+                });
+                dbContext.SaveChanges();
+            }
+        }
+        
     }
 }

@@ -58,9 +58,10 @@ namespace WebChecker.ViewModel
             WebsiteCollection.Add(website);
         }
 
-        public void DeleteElement(int selectedIndex)
+        public void DeleteElement(Website selectedItem)
         {
-            WebsiteCollection.RemoveAt(selectedIndex);
+            _websiteRepository.Delete(selectedItem);
+            WebsiteCollection.Remove(selectedItem);
         }
 
         public void LoadEditValue(Website selectedItem)

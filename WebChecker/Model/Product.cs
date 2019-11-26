@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WebChecker.Model
@@ -7,13 +8,27 @@ namespace WebChecker.Model
     {
         private string _price;
 
-        public Product(string link, string name, string price)
+        public Product(string link, string name, string price, DateTime date)
         {
             Name = name;
             Price = price;
             Link = link;
+            CheckDate = date;
         }
 
+        public string Name { get; private set; }
+        public string Price
+        {
+            get => _price;
+            private set
+            {
+                _price = new string(value.Where(x => (char.IsDigit(x) || x == ',' || x == '.')).ToArray()).Replace(",", ".");
+            }
+        }
+        public string Link { get; private set; }
+        public DateTime CheckDate { get; set; }
+
+        public static IEqualityComparer<Product> PriceNameComparer { get; } = new PriceNameEqualityComparer();
         private sealed class PriceNameEqualityComparer : IEqualityComparer<Product>
         {
             public bool Equals(Product x, Product y)
@@ -33,18 +48,5 @@ namespace WebChecker.Model
                 }
             }
         }
-
-        public static IEqualityComparer<Product> PriceNameComparer { get; } = new PriceNameEqualityComparer();
-
-        public string Name { get; private set; }
-        public string Price
-        {
-            get => _price;
-            private set
-            {
-                _price = new string(value.Where(x=> (char.IsDigit(x) || x == ',' || x=='.')).ToArray()).Replace(",",".");
-            }
-        }
-        public string Link { get; private set; }
     }
 }

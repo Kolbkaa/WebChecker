@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebChecker.Model
 {
-    class Website
+    public class Website
     {
         public int Id { get; set; }
         public string MainUrl { get; set; }
