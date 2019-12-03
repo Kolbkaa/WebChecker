@@ -17,7 +17,7 @@ namespace WebChecker
         public WebCheck(string pageToCheck)
         {
             _pageToCheck = pageToCheck;
-            _checkDate = DateTime.Now;
+            _checkDate = DateTime.Now.Date;
 
             var web = new HtmlWeb();
             web.UserAgent =

@@ -7,6 +7,7 @@ namespace WebChecker.Model
     public class Product
     {
         private string _price;
+        private DateTime _checkDate;
 
         public Product(string link, string name, string price, DateTime date)
         {
@@ -26,7 +27,12 @@ namespace WebChecker.Model
             }
         }
         public string Link { get; private set; }
-        public DateTime CheckDate { get; set; }
+
+        public DateTime CheckDate
+        {
+            get => _checkDate.Date;
+            set => _checkDate = value;
+        }
 
         public static IEqualityComparer<Product> PriceNameComparer { get; } = new PriceNameEqualityComparer();
         private sealed class PriceNameEqualityComparer : IEqualityComparer<Product>
