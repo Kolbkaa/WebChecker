@@ -6,13 +6,17 @@
         xmlns:local="clr-namespace:WebChecker"
         mc:Ignorable="d"
         Title="ShowWindow" SizeToContent="Manual">
-<StackPanel>
-    <WrapPanel Margin="5">
+<Grid>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="50"></RowDefinition>
+        <RowDefinition></RowDefinition>
+    </Grid.RowDefinitions>
+    <WrapPanel Margin="5" Grid.Row="0">
        
         <TextBox Width="100"></TextBox>
         <Button Content="Filtruj" Padding="5" Click="ButtonBase_OnClick"></Button>
     </WrapPanel>
-    <Grid>
+    <Grid Grid.Row="1">
             <DataGrid Name="ProductGrid" ItemsSource="{Binding Products}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
                       AlternatingRowBackground="AliceBlue" AutoGenerateColumns="false" Margin="10 0 10 0" HeadersVisibility="Column" 
                       ScrollViewer.CanContentScroll="True" 
@@ -35,5 +39,5 @@
                 </DataGrid.ContextMenu>
         </DataGrid>
     </Grid>
-</StackPanel>
+</Grid>
 </Window>
