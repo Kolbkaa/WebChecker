@@ -13,9 +13,8 @@
     </Grid.RowDefinitions>
     <WrapPanel Margin="5" Grid.Row="0">
        
-        <TextBox Width="100"></TextBox>
-        <Button Content="Filtruj" Padding="5" Click="ButtonBase_OnClick"></Button>
         <TextBox Width="100" Text="{Binding Path=Filter}"></TextBox>
+        <Button Content="Filtruj" Padding="5" Click="Filter_OnClick"></Button>
         <Button Content="Wyczyść" Padding="5" Click="ClearFilter_onClick"></Button>
     </WrapPanel>
     <Grid Grid.Row="1">

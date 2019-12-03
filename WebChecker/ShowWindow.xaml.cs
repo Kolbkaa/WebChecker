@@ -43,7 +43,7 @@ namespace WebChecker
             chartWindow.ShowDialog();
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void Filter_OnClick(object sender, RoutedEventArgs e)
         {
             _showViewModel.LoadProductList();
         }
