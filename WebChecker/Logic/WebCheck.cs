@@ -42,7 +42,7 @@ namespace WebChecker
 
         public IEnumerable<string> FindLinkOnWeb()
         {
-            var linkOnWeb = _htmlDoc?.DocumentNode?.SelectNodes("//a")
+            var linkOnWeb = _htmlDoc?.DocumentNode?.SelectNodes("//a")?.Where(x => !x.Attributes.Contains("rel"))
                 ?.Select(x => x.Attributes.SingleOrDefault(z => z.Name == "href"))?.Where(x => x != null)?.Select(x => x.Value).ToList();
 
             return linkOnWeb;
