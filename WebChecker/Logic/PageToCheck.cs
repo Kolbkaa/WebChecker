@@ -56,9 +56,9 @@ namespace WebChecker.Model
             _linkToCheck.Enqueue(webUrl);
         }
 
-        public void Check()
+        public async Task Check()
         {
-            Task.Run(() =>
+            await Task.Run(() =>
             {
                 Status = StatusEnum.Sprawdzanie;
                 do
