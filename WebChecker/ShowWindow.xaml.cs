@@ -42,5 +42,10 @@ namespace WebChecker
             chartWindow.ShowYearChart((ProductGrid.SelectedItem as Product).Name);
             chartWindow.ShowDialog();
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showViewModel.LoadProductList();
+        }
     }
 }

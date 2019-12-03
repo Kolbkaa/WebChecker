@@ -6,7 +6,12 @@
         xmlns:local="clr-namespace:WebChecker"
         mc:Ignorable="d"
         Title="ShowWindow" SizeToContent="Manual">
-
+<StackPanel>
+    <WrapPanel Margin="5">
+       
+        <TextBox Width="100"></TextBox>
+        <Button Content="Filtruj" Padding="5" Click="ButtonBase_OnClick"></Button>
+    </WrapPanel>
     <Grid>
             <DataGrid Name="ProductGrid" ItemsSource="{Binding Products}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
                       AlternatingRowBackground="AliceBlue" AutoGenerateColumns="false" Margin="10 0 10 0" HeadersVisibility="Column" 
@@ -18,7 +23,7 @@
                     <DataGridTextColumn Header="Link" Binding="{Binding Link}" Width="4*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
                     <DataGridTextColumn Header="Nazwa" Binding="{Binding Name}" Width="4*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
                     <DataGridTextColumn Header="Cena" Binding="{Binding Price}" Width="*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Data sprawdzenia" Binding="{Binding CheckDate}" Width="1*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Data sprawdzenia" Binding="{Binding CheckDate, StringFormat=\{0:dd.MM.yyy\}}" Width="1*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
                 </DataGrid.Columns>
 
                 <DataGrid.ContextMenu>
@@ -30,5 +35,5 @@
                 </DataGrid.ContextMenu>
         </DataGrid>
     </Grid>
-
+</StackPanel>
 </Window>
