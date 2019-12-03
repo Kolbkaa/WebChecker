@@ -18,6 +18,8 @@ namespace WebChecker.ViewModel
     {
         private readonly ProductRepository ProductRepository;
         private readonly Website _website;
+        private string _filter;
+
         public ShowViewModel(Website website)
         {
             ProductRepository = new ProductRepository();
@@ -30,16 +32,27 @@ namespace WebChecker.ViewModel
             if (string.IsNullOrWhiteSpace(Filter))
             {
                 Products = new ObservableCollection<Product>(ProductRepository.GetProductsByUrl(_website.MainUrl));
+                OnPropertyChanged(nameof(Products));
             }
             else
             {
-                Products = new ObservableCollection<Product>(ProductRepository.GetProductsByUrl(_website.MainUrl).Where(x=> x.Name == Filter));
+                Products = new ObservableCollection<Product>(ProductRepository.GetProductsByUrlAndName(_website.MainUrl,Filter));
                 OnPropertyChanged(nameof(Products));
             }
         }
 
         public ObservableCollection<Product> Products { get; set; }
-        public string Filter { get; set; }
+
+        public string Filter
+        {
+            get => _filter;
+            set
+            {
+                _filter = value;
+                OnPropertyChanged(nameof(Filter));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

@@ -47,5 +47,11 @@ namespace WebChecker
         {
             _showViewModel.LoadProductList();
         }
+
+        private void ClearFilter_onClick(object sender, RoutedEventArgs e)
+        {
+            _showViewModel.Filter = string.Empty;
+            _showViewModel.LoadProductList();
+        }
     }
 }

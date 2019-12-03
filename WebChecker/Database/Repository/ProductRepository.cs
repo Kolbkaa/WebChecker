@@ -42,6 +42,18 @@ namespace WebChecker.Database.Repository
             
             return list;
         }
+        public List<Product> GetProductsByUrlAndName(string url, string name)
+        {
+            var list = new List<Product>();
+
+            using (var dbContext = new AppDbContext())
+            {
+                var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.Name.Contains(name))?.ToList();
+                list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
+            }
+
+            return list;
+        }
         public List<Product> GetProductsByName(string name)
         {
             var list = new List<Product>();
