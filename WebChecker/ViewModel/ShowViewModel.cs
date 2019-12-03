@@ -31,12 +31,12 @@ namespace WebChecker.ViewModel
         {
             if (string.IsNullOrWhiteSpace(Filter))
             {
-                Products = new ObservableCollection<Product>(ProductRepository.GetProductsByUrl(_website.MainUrl));
+                Products = new ObservableCollection<Product>(ProductRepository.GetProductsByUrl(_website.MainUrl).OrderByDescending(product => product.CheckDate));
                 OnPropertyChanged(nameof(Products));
             }
             else
             {
-                Products = new ObservableCollection<Product>(ProductRepository.GetProductsByUrlAndName(_website.MainUrl,Filter));
+                Products = new ObservableCollection<Product>(ProductRepository.GetProductsByUrlAndName(_website.MainUrl,Filter).OrderByDescending(product => product.CheckDate));
                 OnPropertyChanged(nameof(Products));
             }
         }
