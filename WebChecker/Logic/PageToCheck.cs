@@ -11,7 +11,7 @@ using WebChecker.Database.Repository;
 
 namespace WebChecker.Model
 {
-    class PageToCheck : INotifyPropertyChanged
+    public class PageToCheck : INotifyPropertyChanged
     {
         public string WebUrl { get; }
         public int LinkToCheckCount => _linkToCheck.Count;
@@ -133,7 +133,7 @@ namespace WebChecker.Model
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        internal enum StatusEnum { Oczekiwanie, Zakończono, Sprawdzanie }
+        public enum StatusEnum { Oczekiwanie, Zakończono, Sprawdzanie }
     }
 
 }

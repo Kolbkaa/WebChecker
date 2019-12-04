@@ -8,7 +8,7 @@ using WebChecker.Model;
 
 namespace WebChecker.Database.Repository
 {
-    class WebsiteRepository
+    public class WebsiteRepository
     {
         public void Add(Website website)
         {
