@@ -48,7 +48,7 @@ namespace WebChecker.Database.Repository
 
             using (var dbContext = new AppDbContext())
             {
-                var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.Name.Contains(name))?.ToList();
+                var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.Name.Equals(name))?.ToList();
                 list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
             }
 
@@ -60,7 +60,7 @@ namespace WebChecker.Database.Repository
 
             using (var dbContext = new AppDbContext())
             {
-                var products = dbContext.ProductEntity?.Where(x => x.Name.Contains(name))?.ToList();
+                var products = dbContext.ProductEntity?.Where(x => x.Name.Equals(name))?.ToList();
                 list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
             }
             
@@ -73,7 +73,7 @@ namespace WebChecker.Database.Repository
             var startDate = endDate.AddYears(-1);
             using (var dbContext = new AppDbContext())
             {
-                var products = dbContext.ProductEntity?.Where(x => x.Name.Contains(name) && x.CheckDate >= startDate && x.CheckDate<=endDate)?.ToList();
+                var products = dbContext.ProductEntity?.Where(x => x.Name.Equals(name) && x.CheckDate >= startDate && x.CheckDate<=endDate)?.ToList();
                 list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
             }
 
@@ -86,7 +86,7 @@ namespace WebChecker.Database.Repository
             var startDate = endDate.AddMonths(-1);
             using (var dbContext = new AppDbContext())
             {
-                var products = dbContext.ProductEntity?.Where(x => x.Name.Contains(name) && x.CheckDate >= startDate && x.CheckDate <= endDate)?.ToList();
+                var products = dbContext.ProductEntity?.Where(x => x.Name.Equals(name) && x.CheckDate >= startDate && x.CheckDate <= endDate)?.ToList();
                 list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
             }
 

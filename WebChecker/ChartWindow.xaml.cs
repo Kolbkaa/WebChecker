@@ -70,7 +70,7 @@ namespace WebChecker
 
         public void ShowYearChart(string name)
         {
-            var list = ProductRepository.GetProductsByNameFromMonth(name);
+            var list = ProductRepository.GetProductsByNameFromYear(name);
             PrepareChart(list, name);
         }
         public void ShowMonthChart(string name)
