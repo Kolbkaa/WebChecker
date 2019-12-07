@@ -48,7 +48,7 @@ namespace WebChecker.Database.Repository
 
             using (var dbContext = new AppDbContext())
             {
-                var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.Name.Equals(name))?.ToList();
+                var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.Name.Contains(name))?.ToList();
                 list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
             }
 
