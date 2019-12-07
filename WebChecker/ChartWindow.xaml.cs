@@ -63,9 +63,15 @@ namespace WebChecker
         private void CalculateChangePercent(IEnumerable<Product> list)
         {
             var lastTwoPrice = list.OrderByDescending(x => x.CheckDate).Take(2).Select(x => x.Price).ToArray();
-            var priceOne = Convert.ToDecimal(lastTwoPrice[0].Replace(".", ","));
-            var priceTwo = Convert.ToDecimal(lastTwoPrice[1].Replace(".", ","));
-            ChangePercent = (((priceOne - priceTwo) / priceTwo)).ToString("p");
+            if (lastTwoPrice.Length == 2)
+            {
+                var priceOne = Convert.ToDecimal(lastTwoPrice[0].Replace(".", ","));
+                var priceTwo = Convert.ToDecimal(lastTwoPrice[1].Replace(".", ","));
+                ChangePercent = (((priceOne - priceTwo) / priceTwo)).ToString("p");
+                return;
+            }
+
+            ChangePercent = "0%";
         }
 
         public void ShowYearChart(string name)
