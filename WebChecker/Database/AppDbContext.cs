@@ -9,12 +9,12 @@ using WebChecker.Properties;
 
 namespace WebChecker.Database
 {
-    class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
-        private string _ipSqlServer;
-        private string _nameSqlSever;
-        private string _loginSqlServer;
-        private string _passSqlServer;
+        protected string _ipSqlServer;
+        protected string _nameSqlSever;
+        protected string _loginSqlServer;
+        protected string _passSqlServer;
 
         public AppDbContext()
         {
@@ -24,20 +24,14 @@ namespace WebChecker.Database
             _passSqlServer = Settings.Default.passSqlServer;
         }
 
-        public AppDbContext(string ipSqlServer,string nameSqlSever,string loginSqlServer,string passSqlServer)
-        {
-            _ipSqlServer = ipSqlServer;
-            _nameSqlSever = nameSqlSever;
-            _loginSqlServer = loginSqlServer;
-            _passSqlServer = passSqlServer;
-        }
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
 
             base.OnConfiguring(optionsBuilder);
             //optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=WebChecker;Integrated Security=True");
-            optionsBuilder.UseSqlServer($@"Data Source={_ipSqlServer}\{_nameSqlSever};Initial Catalog=WebChecker;User Id={_loginSqlServer};Password={_passSqlServer};");
+            optionsBuilder.UseSqlServer($@"Data Source={_ipSqlServer}\{_nameSqlSever};Initial Catalog=WebCheckerTest;User Id={_loginSqlServer};Password={_passSqlServer};");
         }
 
         //public void CreateDb()

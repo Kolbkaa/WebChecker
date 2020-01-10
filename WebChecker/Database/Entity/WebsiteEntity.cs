@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebChecker.Database.Entity
 {
-    class WebsiteEntity
+    public class WebsiteEntity
     {
         public int Id { get; set; }
         public string MainUrl { get; set; }
