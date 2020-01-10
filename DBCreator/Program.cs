@@ -21,20 +21,20 @@ namespace DBCreator
             string PasswordSqlServer = Console.ReadLine();
 
             
-            using var dbContext = new CreatorDbContext(IpSqlServer,NameSqlServer,LoginSqlServer,PasswordSqlServer);
+            using var dbContext = new AppDbContext(IpSqlServer,NameSqlServer,LoginSqlServer,PasswordSqlServer);
 
             try
             {
                 if (dbContext.Database.CanConnect())
                 {
                     Console.WriteLine("Baza istnieje.");
-                    return;
                 }
 
+               
                 dbContext.Database.Migrate();
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Utworzono bazę danych");
+                Console.WriteLine("Zakończono pomyślnie");
                 Console.ForegroundColor = ConsoleColor.White;
             }
             catch (SqlException e)

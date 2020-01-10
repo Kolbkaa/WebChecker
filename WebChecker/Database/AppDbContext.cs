@@ -31,7 +31,7 @@ namespace WebChecker.Database
 
             base.OnConfiguring(optionsBuilder);
             //optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=WebChecker;Integrated Security=True");
-            optionsBuilder.UseSqlServer($@"Data Source={_ipSqlServer}\{_nameSqlSever};Initial Catalog=WebCheckerTest;User Id={_loginSqlServer};Password={_passSqlServer};");
+            optionsBuilder.UseSqlServer($@"Data Source={_ipSqlServer}\{_nameSqlSever};Initial Catalog=WebChecker;User Id={_loginSqlServer};Password={_passSqlServer};");
         }
 
         //public void CreateDb()

@@ -13,5 +13,6 @@ namespace WebChecker.Database.Entity
         public string Name { get; set; }
         public string Price { get; set; }
         public DateTime CheckDate { get; set; }
+
     }
 }

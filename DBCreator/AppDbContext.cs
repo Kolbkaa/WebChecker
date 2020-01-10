@@ -5,9 +5,13 @@ using WebChecker.Database;
 
 namespace DBCreator
 {
-    class CreatorDbContext : AppDbContext
+    class AppDbContext : WebChecker.Database.AppDbContext
     {
-        public CreatorDbContext(string ipSqlServer, string nameSqlSever, string loginSqlServer, string passSqlServer)
+        public AppDbContext()
+        {
+            
+        }
+        public AppDbContext(string ipSqlServer, string nameSqlSever, string loginSqlServer, string passSqlServer)
         {
             _ipSqlServer = ipSqlServer;
             _nameSqlSever = nameSqlSever;
