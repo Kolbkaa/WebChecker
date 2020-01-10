@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WebChecker.Model;
+using WebChecker.Properties;
+using WebChecker.Tool;
 using WebChecker.ViewModel;
 
 namespace WebChecker
@@ -31,9 +33,24 @@ namespace WebChecker
         {
             InitializeComponent();
 
-            _mainViewModel = new MainViewModel();
-            this.DataContext = _mainViewModel;
+            if (Settings.Default.confSqlServer == false)
+            {
+                new ConfigurationWindows().ShowDialog();
+            }
 
+            if (Settings.Default.confSqlServer == true)
+            {
+                _mainViewModel = new MainViewModel();
+                this.DataContext = _mainViewModel;
+
+            }
+            else
+            {
+                MainPanel.IsEnabled = false;
+                Error.ShowError("Baza danych nie dostępna.");
+            }
+            
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -96,6 +113,12 @@ namespace WebChecker
         private void ShowAll_MenuItem_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void ShowConfigurationWindow(object sender, RoutedEventArgs e)
+        {
+            new ConfigurationWindows().ShowDialog();
+            
         }
     }
 }

@@ -160,6 +160,9 @@
     <Compile Include="ChartWindow.xaml.cs">
       <DependentUpon>ChartWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationWindows.xaml.cs">
+      <DependentUpon>ConfigurationWindows.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Database\AppDbContext.cs" />
     <Compile Include="Database\Entity\ProductEntity.cs" />
     <Compile Include="Database\Entity\WebsiteEntity.cs" />
@@ -179,11 +182,17 @@
     <Compile Include="ShowWindow.xaml.cs">
       <DependentUpon>ShowWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tool\Error.cs" />
     <Compile Include="Tool\SendMail.cs" />
+    <Compile Include="ViewModel\ConfigurationViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="Logic\WebCheck.cs" />
     <Compile Include="ViewModel\ShowViewModel.cs" />
     <Page Include="ChartWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConfigurationWindows.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

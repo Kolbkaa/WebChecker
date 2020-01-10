@@ -9,80 +9,85 @@
 
 
     <StackPanel>
+        <Menu>
+            <MenuItem Header="Ustawienia">
+                <MenuItem Header="Edycja" Click="ShowConfigurationWindow" />
+            </MenuItem>
+        </Menu>
+        <StackPanel Name="MainPanel">
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5*"/>
 
-        <Grid Margin="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="5*"/>
-
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Content="URL" ></Label>
-            <TextBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Text="{Binding Path=Website.MainUrl}"></TextBox>
-            <Label Grid.Column="0" Grid.Row="1" Content="XPath nazwy" ></Label>
-            <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Text="{Binding Path=Website.NameXPath}"></TextBox>
-            <Label Grid.Column="0" Grid.Row="2" Content="XPath ceny" ></Label>
-            <TextBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Text="{Binding Path=Website.PriceXPath}"></TextBox>
-            <Label Grid.Column="0" Grid.Row="3" Content="XPath koszyka" ></Label>
-            <TextBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" Text="{Binding Path=Website.CartButtonXPatch}"></TextBox>
-        </Grid>
-        <WrapPanel >
-            <Button Content="Zapisz" Padding="5" Margin="5" Click="AddToCheck_Click"></Button>
-        </WrapPanel>
-        <DataGrid VerticalAlignment="Top" ItemsSource="{Binding Path=WebsiteCollection }"
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Content="URL" ></Label>
+                <TextBox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Text="{Binding Path=Website.MainUrl}"></TextBox>
+                <Label Grid.Column="0" Grid.Row="1" Content="XPath nazwy" ></Label>
+                <TextBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch" Text="{Binding Path=Website.NameXPath}"></TextBox>
+                <Label Grid.Column="0" Grid.Row="2" Content="XPath ceny" ></Label>
+                <TextBox Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Text="{Binding Path=Website.PriceXPath}"></TextBox>
+                <Label Grid.Column="0" Grid.Row="3" Content="XPath koszyka" ></Label>
+                <TextBox Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" Text="{Binding Path=Website.CartButtonXPatch}"></TextBox>
+            </Grid>
+            <WrapPanel >
+                <Button Content="Zapisz" Padding="5" Margin="5" Click="AddToCheck_Click"></Button>
+            </WrapPanel>
+            <DataGrid VerticalAlignment="Top" ItemsSource="{Binding Path=WebsiteCollection }"
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
                   AlternatingRowBackground="AliceBlue" AutoGenerateColumns="False" Margin="10 0 10 0"
                   Name="WebsiteDataGrid" HeadersVisibility="Column">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="URL" Binding="{Binding MainUrl}" Width="2*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="XPath Nazwy" Binding="{Binding NameXPath}" Width="2*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="XPath Ceny" Binding="{Binding PriceXPath}" Width="2*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="XPath Koszyka" Binding="{Binding CartButtonXPatch}" Width="2*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridCheckBoxColumn Header="Czy sprawdzić?" Binding="{Binding ToCheck}" Width="*" MinWidth="100"></DataGridCheckBoxColumn>
-            </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Usuń" Click="DeleteValueMenuItem_Click" />
-                    <MenuItem Header="Edytuj" Click="EditValue_MenuItem_Click" />
-                    <MenuItem Header="Pokaż produkty" Click="Show_MenuItem_Click" />
-                    <MenuItem Header="Pokaż wszystkie produkty" Click="ShowAll_MenuItem_Click" />
-                </ContextMenu>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="URL" Binding="{Binding MainUrl}" Width="2*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
+                    <DataGridTextColumn Header="XPath Nazwy" Binding="{Binding NameXPath}" Width="2*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
+                    <DataGridTextColumn Header="XPath Ceny" Binding="{Binding PriceXPath}" Width="2*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
+                    <DataGridTextColumn Header="XPath Koszyka" Binding="{Binding CartButtonXPatch}" Width="2*" MinWidth="100" IsReadOnly="True"></DataGridTextColumn>
+                    <DataGridCheckBoxColumn Header="Czy sprawdzić?" Binding="{Binding ToCheck}" Width="*" MinWidth="100"></DataGridCheckBoxColumn>
+                </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Usuń" Click="DeleteValueMenuItem_Click" />
+                        <MenuItem Header="Edytuj" Click="EditValue_MenuItem_Click" />
+                        <MenuItem Header="Pokaż produkty" Click="Show_MenuItem_Click" />
+                        <MenuItem Header="Pokaż wszystkie produkty" Click="ShowAll_MenuItem_Click" />
+                    </ContextMenu>
 
-            </DataGrid.ContextMenu>
-        </DataGrid>
-        <ItemsControl ItemsSource="{Binding Path=PageToCheckCollection}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="{Binding WebUrl}"></Label>
-                        <Label Grid.Column="1" Content="Ilość produktów:"></Label>
-                        <Label Grid.Column="2" Content="{Binding ProductCount}"></Label>
-                        <ProgressBar Grid.Column="3" Value="{Binding LinkCheckedCount, Mode=OneWay}" Maximum="{Binding AllLink, Mode=OneWay}" MaxWidth="300"></ProgressBar>
-                        <Label Grid.Column="4" Content="{Binding Status}"></Label>
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+            <ItemsControl ItemsSource="{Binding Path=PageToCheckCollection}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
 
-        </ItemsControl>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="{Binding WebUrl}"></Label>
+                            <Label Grid.Column="1" Content="Ilość produktów:"></Label>
+                            <Label Grid.Column="2" Content="{Binding ProductCount}"></Label>
+                            <ProgressBar Grid.Column="3" Value="{Binding LinkCheckedCount, Mode=OneWay}" Maximum="{Binding AllLink, Mode=OneWay}" MaxWidth="300"></ProgressBar>
+                            <Label Grid.Column="4" Content="{Binding Status}"></Label>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
 
-        <WrapPanel Margin="5">
-            <Button Content="Sprawdź" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="128" Height="40" Click="Button_Click"/>
-        </WrapPanel>
+            </ItemsControl>
 
+            <WrapPanel Margin="5">
+                <Button Content="Sprawdź" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="128" Height="40" Click="Button_Click"/>
+            </WrapPanel>
 
+        </StackPanel>
     </StackPanel>
 
 </Window>

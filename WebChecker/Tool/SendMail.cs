@@ -20,7 +20,7 @@ namespace WebChecker.Tool
         public bool Ssl { get; private set; }
         public bool CorrectConfiguration { get; set; }
 
-        SmtpClient smtp = new SmtpClient();
+        private SmtpClient _smtp = new SmtpClient();
 
         public SendMail()
         {
@@ -59,12 +59,11 @@ namespace WebChecker.Tool
         }
         public bool CheckConnect()
         {
-            bool check = false; try
+            bool check = false;
+            try
             {
                 using (var client = new SmtpClient())
                 {
-
-
                     client.Connect(SmtpServer, SmtpPort, Ssl);
                     check = client.IsConnected;
 
@@ -75,7 +74,8 @@ namespace WebChecker.Tool
             }
             catch (Exception e)
             {
-                Task.Run(() => LogToFile.SaveLogToFile("SendMail: StackTrace: " + e.StackTrace + "Massage: " + e.Message + "Response: "));
+                Error.ShowError(e.Message);
+                //Task.Run(() => LogToFile.SaveLogToFile("SendMail: StackTrace: " + e.StackTrace + "Massage: " + e.Message + "Response: "));
                 return check;
             }
 
@@ -83,55 +83,67 @@ namespace WebChecker.Tool
         private MimeMessage TestMail()
         {
             var mail = new MimeMessage();
-            mail.From.Add(new MailboxAddress("Test", "dawidtkd@gmail.com"));
-            mail.To.Add(new MailboxAddress("Test", "dawid.kolbusz1@gmail.com"));
+            mail.From.Add(new MailboxAddress("Test", SmtpUsername));
+            mail.To.Add(new MailboxAddress("Test", SmtpUsername));
             mail.Subject = "Test";
             mail.Body = new TextPart("plain") { Text = "Test" };
             return mail;
         }
-        public bool CheckAuth()
-        {
-            bool check = false;
-            try
-            {
-                using (var client = new SmtpClient())
-                {
-                    client.Connect(SmtpServer, SmtpPort);
+        //public bool CheckAuth()
+        //{
+        //    bool check = false;
+        //    try
+        //    {
+        //        using (var client = new SmtpClient())
+        //        {
+        //            client.Connect(SmtpServer, SmtpPort);
 
-                    client.Authenticate(SmtpUsername, SmtpPassword);
+        //            client.Authenticate(SmtpUsername, SmtpPassword);
 
-                    check = client.IsAuthenticated;
+        //            check = client.IsAuthenticated;
 
-                    client.Disconnect(true);
-                }
-                return check;
-            }
-            catch (Exception e)
-            {
-                Task.Run(() => LogToFile.SaveLogToFile("SendMail: StackTrace: " + e.StackTrace + "Massage: " + e.Message + "Response: "));
-                return check;
-            }
+        //            client.Disconnect(true);
+        //        }
+        //        return check;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        //Task.Run(() => LogToFile.SaveLogToFile("SendMail: StackTrace: " + e.StackTrace + "Massage: " + e.Message + "Response: "));
+        //        return check;
+        //    }
 
 
-        }
+        //}
 
         public void SendReport(string message, string filePath, string name)
         {
+            if (CorrectConfiguration == false)
+            {
+                return;
+            }
+
             var mail = new MimeMessage();
             mail.From.Add(new MailboxAddress("Porównywarka", "dawidtkd@gmail.com"));
             mail.To.Add(new MailboxAddress("Porównywarka", "dawidtkd@gmail.com"));
             mail.Subject = "Raport " + name;
-            mail.Body = new TextPart("plain") { Text = message };
+
+            var builder = new BodyBuilder { TextBody = message };
+
+            builder.Attachments.Add(filePath);
+
+            mail.Body = builder.ToMessageBody();
+            //mail.Body = new TextPart("plain") { Text = message };
 
 
-            // create an image attachment for the file located at path
-            var attachment = new MimePart("text", "csv")
-            {
-                Content = new MimeContent(File.OpenRead(filePath), ContentEncoding.Default),
-                ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
-                ContentTransferEncoding = ContentEncoding.Base64,
-                FileName = Path.GetFileName(filePath)
-            };
+            //// create an image attachment for the file located at path
+            //var attachment = new MimePart("text", "csv")
+            //{
+
+            //    //Content = new MimeContent(File.OpenRead(filePath), ContentEncoding.Default),
+            //    ContentDisposition = new ContentDisposition(ContentDisposition.Attachment),
+            //    ContentTransferEncoding = ContentEncoding.Base64,
+            //    FileName = Path.GetFileName(filePath)
+            //};
         }
     }
 }

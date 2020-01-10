@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebChecker", "WebChecker\WebChecker.csproj", "{16C09724-A62B-458F-AFA3-738C0D95EACA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebcheckerConsole", "WebcheckerConsole\WebcheckerConsole.csproj", "{B593B7F8-7ABC-4332-921A-39BDAEED7317}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebcheckerConsole", "WebcheckerConsole\WebcheckerConsole.csproj", "{B593B7F8-7ABC-4332-921A-39BDAEED7317}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBCreator", "DBCreator\DBCreator.csproj", "{5E27AF1E-6716-43FB-B750-287B3111F994}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B593B7F8-7ABC-4332-921A-39BDAEED7317}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B593B7F8-7ABC-4332-921A-39BDAEED7317}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B593B7F8-7ABC-4332-921A-39BDAEED7317}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E27AF1E-6716-43FB-B750-287B3111F994}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E27AF1E-6716-43FB-B750-287B3111F994}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E27AF1E-6716-43FB-B750-287B3111F994}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E27AF1E-6716-43FB-B750-287B3111F994}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

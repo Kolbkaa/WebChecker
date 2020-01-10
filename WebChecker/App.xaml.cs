@@ -17,7 +17,7 @@ namespace WebChecker
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            new AppDbContext().CreateDb();
+            //new AppDbContext().CreateDb();
         }
     }
 }

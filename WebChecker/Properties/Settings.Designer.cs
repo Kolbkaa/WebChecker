@@ -94,5 +94,65 @@ namespace WebChecker.Properties {
                 this["ssl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ipSqlServer {
+            get {
+                return ((string)(this["ipSqlServer"]));
+            }
+            set {
+                this["ipSqlServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string nameSqlServer {
+            get {
+                return ((string)(this["nameSqlServer"]));
+            }
+            set {
+                this["nameSqlServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string loginSqlServer {
+            get {
+                return ((string)(this["loginSqlServer"]));
+            }
+            set {
+                this["loginSqlServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string passSqlServer {
+            get {
+                return ((string)(this["passSqlServer"]));
+            }
+            set {
+                this["passSqlServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool confSqlServer {
+            get {
+                return ((bool)(this["confSqlServer"]));
+            }
+            set {
+                this["confSqlServer"] = value;
+            }
+        }
     }
 }

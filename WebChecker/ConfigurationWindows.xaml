@@ -1,0 +1,68 @@
+﻿<Window x:Class="WebChecker.ConfigurationWindows"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WebChecker"
+        mc:Ignorable="d"
+        Title="Configuration" Height="450" Width="800">
+    <StackPanel>
+        <GroupBox Header="Baza danych">
+            <Grid>
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Margin="1">Adres IP:</Label>
+                <Label Grid.Column="0" Grid.Row="1" Margin="1">Nazwa serwera:</Label>
+                <Label Grid.Column="0" Grid.Row="2" Margin="1">Login:</Label>
+                <Label Grid.Column="0" Grid.Row="3" Margin="1">Hasło:</Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Margin="1" Text="{Binding Path=IpSqlServer}"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="1" Margin="1" Text="{Binding Path=NameSqlServer}"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="2" Margin="1" Text="{Binding Path=LoginSqlServer}"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="3" Margin="1" Text="{Binding Path=PasswordSqlServer}"></TextBox>
+                <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Click="SaveDatabaseConfiguration_OnClick" Margin="1">Zapisz</Button>
+                <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Click="CheckDatabaseConnection_OnClick" Margin="1">Sprawdź połączenie</Button>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="E-Mail">
+            <Grid>
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition ></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Margin="1">Adres servera SMTP:</Label>
+                <Label Grid.Column="0" Grid.Row="1" Margin="1">Port SMTP:</Label>
+                <Label Grid.Column="0" Grid.Row="2" Margin="1">Login:</Label>
+                <Label Grid.Column="0" Grid.Row="3" Margin="1">Hasło:</Label>
+                <Label Grid.Column="0" Grid.Row="4">SSL:</Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Margin="1" Text="{Binding Path=SmtpServer}"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="1" Margin="1" Text="{Binding Path=SmtpPort}"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="2" Margin="1" Text="{Binding Path=SmtpUsername}"></TextBox>
+                <TextBox Grid.Column="1" Grid.Row="3" Margin="1" Text="{Binding Path=SmtpPassword}"></TextBox>
+                <CheckBox Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" IsChecked="{Binding Path=Ssl}"></CheckBox>
+                <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" Click="SaveMailConfiguration_OnClick" Margin="1">Zapisz</Button>
+                <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Click="CheckMailConnection_OnClick" Margin="1">Sprawdź połączenie</Button>
+            </Grid>
+        </GroupBox>
+    </StackPanel>
+</Window>
