@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WebChecker.Properties;
 
 namespace WebChecker.ViewModel
 {
-    class ConfigurationViewModel
+    [Serializable]
+    public class ConfigurationViewModel  
     {
         public ConfigurationViewModel()
         {
@@ -41,6 +45,9 @@ namespace WebChecker.ViewModel
             Settings.Default.loginSqlServer = LoginSqlServer;
             Settings.Default.passSqlServer = PasswordSqlServer;
             Settings.Default.Save();
+
+           
+
         }
 
         public void SaveMailConfiguration()

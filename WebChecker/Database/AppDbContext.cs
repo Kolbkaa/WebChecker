@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebChecker.Database.Entity;
 using WebChecker.Properties;
+using WebChecker.Tool;
+using WebChecker.ViewModel;
 
 namespace WebChecker.Database
 {
@@ -18,6 +20,17 @@ namespace WebChecker.Database
 
         public AppDbContext()
         {
+            var SerializableService = new SerializableService<ConfigurationViewModel>();
+            var conf = SerializableService.Deserialize();
+            if(conf != null)
+            {
+                _ipSqlServer = conf.IpSqlServer;
+                _nameSqlSever = conf.NameSqlServer;
+                _loginSqlServer = conf.LoginSqlServer;
+                _passSqlServer = conf.PasswordSqlServer;
+                return;
+            }
+
             _ipSqlServer = Settings.Default.ipSqlServer;
             _nameSqlSever = Settings.Default.nameSqlServer;
             _loginSqlServer = Settings.Default.loginSqlServer;

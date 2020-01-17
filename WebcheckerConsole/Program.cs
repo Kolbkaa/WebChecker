@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using WebChecker.Database.Repository;
 using WebChecker.Model;
+using WebChecker.Tool;
+using WebChecker.ViewModel;
 
 namespace WebcheckerConsole
 {
@@ -11,6 +14,7 @@ namespace WebcheckerConsole
     {
         static void Main(string[] args)
         {
+           
             var _websiteRepository = new WebsiteRepository();
             var _websiteCollection = _websiteRepository.GetAll();
             var _pageToCheckTaskList = new List<Task>();

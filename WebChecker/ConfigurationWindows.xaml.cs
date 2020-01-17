@@ -38,6 +38,8 @@ namespace WebChecker
         private void SaveDatabaseConfiguration_OnClick(object sender, RoutedEventArgs e)
         {
             _configurationViewModel.SaveDbConfiguration();
+            var SerializableService = new SerializableService<ConfigurationViewModel>();
+            SerializableService.Serialize(_configurationViewModel);
             MessageBox.Show("Zapisano ustawienia.", "Ustawienia", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
