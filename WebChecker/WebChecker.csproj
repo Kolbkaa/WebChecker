@@ -184,8 +184,10 @@
     <Compile Include="Database\AppDbContext.cs" />
     <Compile Include="Database\Entity\ProductEntity.cs" />
     <Compile Include="Database\Entity\WebsiteEntity.cs" />
+    <Compile Include="Database\Repository\DateRepository.cs" />
     <Compile Include="Database\Repository\ProductRepository.cs" />
     <Compile Include="Database\Repository\WebsiteRepository.cs" />
+    <Compile Include="Logic\GeneratorReport.cs" />
     <Compile Include="Migrations\20191112213732_websiteTable.cs" />
     <Compile Include="Migrations\20191112213732_websiteTable.designer.cs">
       <DependentUpon>20191112213732_websiteTable.cs</DependentUpon>
