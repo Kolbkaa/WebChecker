@@ -110,17 +110,21 @@ namespace WebChecker.Model
         }
         private List<string> PrepareLink(IEnumerable<string> urlList)
         {
+            string newLink;
             var newList = new List<string>();
             foreach (var link in urlList)
             {
-                if (link == null || !link.StartsWith("/")) continue;
+                newLink = link;
+                if (newLink != null && newLink.StartsWith("/"))
+                {
+                    var stringBuilder = new StringBuilder(WebUrl);
 
-                var stringBuilder = new StringBuilder(WebUrl);
-                //stringBuilder.Append(link.Split('?')?.First());
-                stringBuilder.Append(link);
-
-                if (stringBuilder.ToString().Contains(WebUrl))
-                    newList.Add(stringBuilder.ToString());
+               
+                    stringBuilder.Append(newLink);
+                    newLink = stringBuilder.ToString();
+                }
+                if (newLink.Contains(WebUrl))
+                    newList.Add(newLink);
             }
             return newList;
         }
