@@ -78,7 +78,6 @@ namespace WebChecker.Logic
                 raportCsv.AppendLine($"\"{product.Value.Link}\";\"{product.Value.Name}\";\"-\";\"-\";\"{product.Value.CheckDate}\";\"{product.Value.Price}\";\"-\"");
 
             }
-            SendMail mail = new SendMail();
             
         }
     }
