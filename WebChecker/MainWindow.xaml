@@ -85,6 +85,7 @@
 
             <WrapPanel Margin="5">
                 <Button Content="Sprawdź" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="128" Height="40" Click="Button_Click"/>
+                <Button Content="test" Click="Button_Click_1"></Button>
             </WrapPanel>
 
         </StackPanel>

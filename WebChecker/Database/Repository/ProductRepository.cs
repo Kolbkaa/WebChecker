@@ -135,20 +135,21 @@ namespace WebChecker.Database.Repository
             return list;
         }
 
-        public Dictionary<string,Product> GetProductsByUrlFromDate(string name, DateTime date)
+        public Dictionary<string, Product> GetProductsByUrlFromDate(string url, DateTime date)
         {
             var dictionary = new Dictionary<string, Product>();
             try
             {
                 using (var dbContext = new AppDbContext())
                 {
-                    var products = dbContext.ProductEntity?.Where(x => x.Name.Equals(name) && x.CheckDate == date )?.ToList();
+                    var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.CheckDate == date)?.ToList();
 
                     foreach (var product in products)
                     {
-                        dictionary.Add(product.Name, new Product(product.Link, product.Name, product.Price, product.CheckDate));
-                      
-                    }                    
+                        if (!dictionary.ContainsKey(product.Name))
+                            dictionary.Add(product.Name, new Product(product.Link, product.Name, product.Price, product.CheckDate));
+
+                    }
                 }
             }
             catch (SqlException e)

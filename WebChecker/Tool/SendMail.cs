@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using WebChecker.ViewModel;
 
 namespace WebChecker.Tool
 {
@@ -25,38 +26,52 @@ namespace WebChecker.Tool
         public SendMail()
         {
             CorrectConfiguration = false;
+            var serializableService = new SerializableService<ConfigurationViewModel>();
+
+            var configuration = serializableService.Deserialize();
+            if(configuration != null)
+            {
+                SmtpServer = configuration.SmtpServer;
+                SmtpPort = configuration.SmtpPort;
+                SmtpUsername = configuration.SmtpUsername;
+                SmtpPassword = configuration.SmtpPassword;
+                Ssl = configuration.Ssl;
+                CorrectConfiguration = true;
+
+            }
+
         }
 
-        public void ConfigureMail(string smtpServer, string smtpPort, string smtpUsername, string smtpPassword, bool ssl)
-        {
+        //public void ConfigureMail(string smtpServer, string smtpPort, string smtpUsername, string smtpPassword, bool ssl)
+        //{
 
-            SmtpServer = smtpServer;
-            SmtpPort = Convert.ToInt32(smtpPort);
-            SmtpUsername = smtpUsername;
-            SmtpPassword = smtpPassword;
-            Ssl = ssl;
+        //    SmtpServer = smtpServer;
+        //    SmtpPort = Convert.ToInt32(smtpPort);
+        //    SmtpUsername = smtpUsername;
+        //    SmtpPassword = smtpPassword;
+        //    Ssl = ssl;
 
-        }
+        //}
 
-        public void SaveConfToSetting()
-        {
-            Properties.Settings.Default.smtpCorrectConf = CorrectConfiguration;
-            Properties.Settings.Default.smtpSerwer = SmtpServer;
-            Properties.Settings.Default.smtpPort = SmtpPort;
-            Properties.Settings.Default.smtpUsername = SmtpUsername;
-            Properties.Settings.Default.smtpPassword = SmtpPassword;
-            Properties.Settings.Default.ssl = Ssl;
-            Properties.Settings.Default.Save();
-        }
-        public void LoadConfFromSetting()
-        {
-            CorrectConfiguration = Properties.Settings.Default.smtpCorrectConf;
-            SmtpServer = Properties.Settings.Default.smtpSerwer;
-            SmtpPort = Properties.Settings.Default.smtpPort;
-            SmtpUsername = Properties.Settings.Default.smtpUsername;
-            SmtpPassword = Properties.Settings.Default.smtpPassword;
-            Ssl = Properties.Settings.Default.ssl;
-        }
+        //public void SaveConfToSetting()
+        //{
+        //    Properties.Settings.Default.smtpCorrectConf = CorrectConfiguration;
+        //    Properties.Settings.Default.smtpSerwer = SmtpServer;
+        //    Properties.Settings.Default.smtpPort = SmtpPort;
+        //    Properties.Settings.Default.smtpUsername = SmtpUsername;
+        //    Properties.Settings.Default.smtpPassword = SmtpPassword;
+        //    Properties.Settings.Default.ssl = Ssl;
+        //    Properties.Settings.Default.Save();
+        //}
+        //public void LoadConfFromSetting()
+        //{
+        //    CorrectConfiguration = Properties.Settings.Default.smtpCorrectConf;
+        //    SmtpServer = Properties.Settings.Default.smtpSerwer;
+        //    SmtpPort = Properties.Settings.Default.smtpPort;
+        //    SmtpUsername = Properties.Settings.Default.smtpUsername;
+        //    SmtpPassword = Properties.Settings.Default.smtpPassword;
+        //    Ssl = Properties.Settings.Default.ssl;
+        //}
         public bool CheckConnect()
         {
             bool check = false;
@@ -115,7 +130,7 @@ namespace WebChecker.Tool
 
         //}
 
-        public void SendReport(string message, string filePath, string name)
+        public void SendReport(string message, Stream fileStream, string name)
         {
             if (CorrectConfiguration == false)
             {
@@ -129,7 +144,7 @@ namespace WebChecker.Tool
 
             var builder = new BodyBuilder { TextBody = message };
 
-            builder.Attachments.Add(filePath);
+            builder.Attachments.Add("raport", fileStream);
 
             mail.Body = builder.ToMessageBody();
             //mail.Body = new TextPart("plain") { Text = message };

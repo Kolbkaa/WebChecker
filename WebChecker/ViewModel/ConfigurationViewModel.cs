@@ -13,20 +13,7 @@ namespace WebChecker.ViewModel
     [Serializable]
     public class ConfigurationViewModel  
     {
-        public ConfigurationViewModel()
-        {
-            IpSqlServer = Settings.Default.ipSqlServer;
-            NameSqlServer = Settings.Default.nameSqlServer;
-            LoginSqlServer = Settings.Default.loginSqlServer;
-            PasswordSqlServer = Settings.Default.passSqlServer;
-
-            SmtpServer = Properties.Settings.Default.smtpSerwer;
-            SmtpPort = Properties.Settings.Default.smtpPort;
-            SmtpUsername = Properties.Settings.Default.smtpUsername;
-            SmtpPassword = Properties.Settings.Default.smtpPassword;
-            Ssl = Properties.Settings.Default.ssl;
-        }
-
+ 
         public string IpSqlServer { get; set; }
         public string NameSqlServer { get; set; }
         public string LoginSqlServer { get; set; }
@@ -38,28 +25,28 @@ namespace WebChecker.ViewModel
         public string SmtpPassword { get; set; }
         public bool Ssl { get; set; }
 
-        public void SaveDbConfiguration()
-        {
-            Settings.Default.ipSqlServer = IpSqlServer;
-            Settings.Default.nameSqlServer = NameSqlServer;
-            Settings.Default.loginSqlServer = LoginSqlServer;
-            Settings.Default.passSqlServer = PasswordSqlServer;
-            Settings.Default.Save();
+        //public void SaveDbConfiguration()
+        //{
+        //    Settings.Default.ipSqlServer = IpSqlServer;
+        //    Settings.Default.nameSqlServer = NameSqlServer;
+        //    Settings.Default.loginSqlServer = LoginSqlServer;
+        //    Settings.Default.passSqlServer = PasswordSqlServer;
+        //    Settings.Default.Save();
 
            
 
-        }
+        //}
 
-        public void SaveMailConfiguration()
-        {
+        //public void SaveMailConfiguration()
+        //{
 
-            Settings.Default.smtpSerwer = SmtpServer;
-            Settings.Default.smtpPort = SmtpPort;
-            Settings.Default.smtpUsername = SmtpUsername;
-            Settings.Default.smtpPassword = SmtpPassword;
-            Settings.Default.ssl = Ssl;
-            Settings.Default.Save();
-        }
+        //    Settings.Default.smtpSerwer = SmtpServer;
+        //    Settings.Default.smtpPort = SmtpPort;
+        //    Settings.Default.smtpUsername = SmtpUsername;
+        //    Settings.Default.smtpPassword = SmtpPassword;
+        //    Settings.Default.ssl = Ssl;
+        //    Settings.Default.Save();
+        //}
 
     }
 }

@@ -30,14 +30,16 @@ namespace WebChecker
         private readonly ConfigurationViewModel _configurationViewModel;
         public ConfigurationWindows()
         {
-            _configurationViewModel = new ConfigurationViewModel();
+            var serializableService = new SerializableService<ConfigurationViewModel>();
+
+            _configurationViewModel = serializableService.Deserialize();
             this.DataContext = _configurationViewModel;
             InitializeComponent();
         }
 
         private void SaveDatabaseConfiguration_OnClick(object sender, RoutedEventArgs e)
         {
-            _configurationViewModel.SaveDbConfiguration();
+            //_configurationViewModel.SaveDbConfiguration();
             var SerializableService = new SerializableService<ConfigurationViewModel>();
             SerializableService.Serialize(_configurationViewModel);
             MessageBox.Show("Zapisano ustawienia.", "Ustawienia", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -74,7 +76,6 @@ namespace WebChecker
         private void CheckMailConnection_OnClick(object sender, RoutedEventArgs e)
         {
             var sendMail = new SendMail();
-            sendMail.LoadConfFromSetting();
             var checkConnection = sendMail.CheckConnect();
 
             if (checkConnection)
@@ -91,7 +92,9 @@ namespace WebChecker
 
         private void SaveMailConfiguration_OnClick(object sender, RoutedEventArgs e)
         {
-            _configurationViewModel.SaveMailConfiguration();
+            //_configurationViewModel.SaveMailConfiguration();
+            var SerializableService = new SerializableService<ConfigurationViewModel>();
+            SerializableService.Serialize(_configurationViewModel);
             MessageBox.Show("Zapisano ustawienia.", "Ustawienia", MessageBoxButton.OK, MessageBoxImage.Information);
 
 

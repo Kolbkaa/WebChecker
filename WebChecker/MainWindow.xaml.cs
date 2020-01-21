@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WebChecker.Logic;
 using WebChecker.Model;
 using WebChecker.Properties;
 using WebChecker.Tool;
@@ -119,6 +120,13 @@ namespace WebChecker
         {
             new ConfigurationWindows().ShowDialog();
             
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var raport = new GeneratorReport("https://www.arante.pl/");
+            raport.Generate();
+
         }
     }
 }

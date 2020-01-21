@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebChecker.Database.Repository;
+using WebChecker.Tool;
 
 namespace WebChecker.Logic
 {
@@ -19,7 +21,7 @@ namespace WebChecker.Logic
 
         public GeneratorReport(string pagePath)
         {
-            raportCsv = new StringBuilder($"LINK,NAZWA,DATA SPRAWDZENIA,CENA,DATA SPRAWDZENIE,CENA,PROCENT ZMIANY{Environment.NewLine}");
+            raportCsv = new StringBuilder($"\"LINK\";\"NAZWA\";\"DATA SPRAWDZENIA\";\"CENA\";DATA SPRAWDZENIE\";\"CENA\";\"PROCENT ZMIANY\"{Environment.NewLine}");
             _pageUrl = pagePath;
         }
 
@@ -48,8 +50,8 @@ namespace WebChecker.Logic
             {
                 if (earlierList.ContainsKey(productFromActualList.Key))
                 {
-                    double changePercent = (1 - (double.Parse(earlierList[productFromActualList.Key].Price) / double.Parse(productFromActualList.Value.Price))) - 100;
-                    raportCsv.AppendLine($"{productFromActualList.Value.Link},{productFromActualList.Key},{earlierList[productFromActualList.Key].CheckDate},{earlierList[productFromActualList.Key].Price},{productFromActualList.Value.CheckDate},{productFromActualList.Value.Price},{changePercent}");
+                    double changePercent = (1 - (double.Parse(earlierList[productFromActualList.Key].Price.Replace(".", ",")) / double.Parse(productFromActualList.Value.Price.Replace(".",",")))) * 100;
+                    raportCsv.AppendLine($"\"{productFromActualList.Value.Link}\";\"{productFromActualList.Key}\";\"{earlierList[productFromActualList.Key].CheckDate}\";\"{earlierList[productFromActualList.Key].Price}\";\"{productFromActualList.Value.CheckDate}\";\"{productFromActualList.Value.Price}\";\"{changePercent}\"");
                 
                     if(_changeUpPercent < changePercent)
                     {
@@ -68,14 +70,16 @@ namespace WebChecker.Logic
             }
             foreach (var product in tempEarlierList)
             {
-                raportCsv.AppendLine($"{product.Value.Link},{product.Value.Name},{product.Value.CheckDate},{product.Value.Price},-,-,-");
+                raportCsv.AppendLine($"\"{product.Value.Link}\";\"{product.Value.Name}\";\"{product.Value.CheckDate}\";\"{product.Value.Price}\";\"-\";\"-\";\"-\"");
 
             }
             foreach (var product in tempActualList)
             {
-                raportCsv.AppendLine($"{product.Value.Link},{product.Value.Name},-,-,{product.Value.CheckDate},{product.Value.Price},-");
+                raportCsv.AppendLine($"\"{product.Value.Link}\";\"{product.Value.Name}\";\"-\";\"-\";\"{product.Value.CheckDate}\";\"{product.Value.Price}\";\"-\"");
 
             }
+            SendMail mail = new SendMail();
+            
         }
     }
 }
