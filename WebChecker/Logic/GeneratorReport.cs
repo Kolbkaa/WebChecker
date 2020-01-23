@@ -9,36 +9,57 @@ using WebChecker.Tool;
 
 namespace WebChecker.Logic
 {
-    class GeneratorReport
+    class GeneratorReport : IDisposable
     {
         private readonly string _pageUrl;
         private int _actualListCount = 0;
         private int _earlierListCont = 0;
+        private int _newProductCount = 0;
+        private int _oldProductCont = 0;
         private double _changeUpPercent = 0;
         private double _changeDownPercent = 0;
-        private StringBuilder raportCsv;
+        private readonly MemoryStream _ms;
+        public MemoryStream Raport { get
+            {
+                _sw.Flush();
+                _ms.Position = 0;
+                return _ms;
+            } }
+        private readonly StreamWriter _sw;
+
+        public  string RaportName { get; }
+
+        private readonly DateRepository _dateRepository;
+        private readonly ProductRepository _productRepository;
 
 
         public GeneratorReport(string pagePath)
         {
-            raportCsv = new StringBuilder($"\"LINK\";\"NAZWA\";\"DATA SPRAWDZENIA\";\"CENA\";DATA SPRAWDZENIE\";\"CENA\";\"PROCENT ZMIANY\"{Environment.NewLine}");
+            
             _pageUrl = pagePath;
+            RaportName = pagePath.GetHashCode().ToString() + ".csv";
+
+            _ms = new MemoryStream();
+            _sw = new StreamWriter(_ms, Encoding.UTF8);
+            _sw.WriteLine($"\"LINK\";\"NAZWA\";\"DATA SPRAWDZENIA\";\"CENA\";\"DATA SPRAWDZENIE\";\"CENA\";\"PROCENT ZMIANY\"");
+
+            _dateRepository = new DateRepository();
+            _productRepository = new ProductRepository();
         }
 
         public void Generate()
         {
-            var dateRepository = new DateRepository();
-            var dateGap = dateRepository.TwoLastDateCheck(_pageUrl);
+          
+            var dateGap = _dateRepository.TwoLastDateCheck(_pageUrl);
 
             if (dateGap.Length < 2)
             {
                 return;
             }
 
-            var productRepository = new ProductRepository();
-
-            var actualList = productRepository.GetProductsByUrlFromDate(_pageUrl, dateGap[0]);
-            var earlierList = productRepository.GetProductsByUrlFromDate(_pageUrl, dateGap[1]);
+          
+            var actualList = _productRepository.GetProductsByUrlFromDate(_pageUrl, dateGap[0]);
+            var earlierList = _productRepository.GetProductsByUrlFromDate(_pageUrl, dateGap[1]);
 
             var tempActualList = new Dictionary<string, Model.Product>(actualList);
             var tempEarlierList = new Dictionary<string, Model.Product>(earlierList);
@@ -51,8 +72,9 @@ namespace WebChecker.Logic
                 if (earlierList.ContainsKey(productFromActualList.Key))
                 {
                     double changePercent = (1 - (double.Parse(earlierList[productFromActualList.Key].Price.Replace(".", ",")) / double.Parse(productFromActualList.Value.Price.Replace(".",",")))) * 100;
-                    raportCsv.AppendLine($"\"{productFromActualList.Value.Link}\";\"{productFromActualList.Key}\";\"{earlierList[productFromActualList.Key].CheckDate}\";\"{earlierList[productFromActualList.Key].Price}\";\"{productFromActualList.Value.CheckDate}\";\"{productFromActualList.Value.Price}\";\"{changePercent}\"");
-                
+                    
+                    _sw.WriteLine($"\"{productFromActualList.Value.Link}\";\"{productFromActualList.Key}\";\"{earlierList[productFromActualList.Key].CheckDate}\";\"{earlierList[productFromActualList.Key].Price}\";\"{productFromActualList.Value.CheckDate}\";\"{productFromActualList.Value.Price}\";\"{changePercent}\"");
+                    
                     if(_changeUpPercent < changePercent)
                     {
                         _changeUpPercent += changePercent;
@@ -70,15 +92,35 @@ namespace WebChecker.Logic
             }
             foreach (var product in tempEarlierList)
             {
-                raportCsv.AppendLine($"\"{product.Value.Link}\";\"{product.Value.Name}\";\"{product.Value.CheckDate}\";\"{product.Value.Price}\";\"-\";\"-\";\"-\"");
+                 _sw.WriteLine($"\"{product.Value.Link}\";\"{product.Value.Name}\";\"{product.Value.CheckDate}\";\"{product.Value.Price}\";\"-\";\"-\";\"-\"");
 
             }
             foreach (var product in tempActualList)
             {
-                raportCsv.AppendLine($"\"{product.Value.Link}\";\"{product.Value.Name}\";\"-\";\"-\";\"{product.Value.CheckDate}\";\"{product.Value.Price}\";\"-\"");
+                _sw.WriteLine($"\"{product.Value.Link}\";\"{product.Value.Name}\";\"-\";\"-\";\"{product.Value.CheckDate}\";\"{product.Value.Price}\";\"-\"");
 
             }
+            _newProductCount = tempActualList.Count;
+            _oldProductCont = tempEarlierList.Count;
             
+        }
+     
+        public string GetShortMessage()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(_pageUrl);
+            sb.AppendLine($"Znaleziono produktów: {_actualListCount}");
+            sb.AppendLine($"Maksymalna zmiana ceny w górę: {_changeUpPercent}");
+            sb.AppendLine($"Maksymalna zmiana ceny w dół: {_changeDownPercent}");
+            sb.AppendLine($"Nowych produktów: {_newProductCount}");
+            sb.AppendLine($"Starych produktów: {_oldProductCont}");
+            return sb.ToString();
+        }
+
+        public void Dispose()
+        {
+            _sw.Dispose();
+            Raport.Dispose();
         }
     }
 }

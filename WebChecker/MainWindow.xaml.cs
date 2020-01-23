@@ -124,8 +124,11 @@ namespace WebChecker
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            //var raport = new GeneratorReport("http://www.harpo.com.pl/");
             var raport = new GeneratorReport("https://www.arante.pl/");
             raport.Generate();
+            var mail = new SendMail();
+            mail.SendReport(raport.GetShortMessage(), raport.Raport, raport.RaportName, "https://www.arante.pl/");
 
         }
     }

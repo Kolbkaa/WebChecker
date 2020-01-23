@@ -130,7 +130,7 @@ namespace WebChecker.Tool
 
         //}
 
-        public void SendReport(string message, Stream fileStream, string name)
+        public void SendReport(string message, Stream filePath, string name, string url)
         {
             if (CorrectConfiguration == false)
             {
@@ -138,15 +138,22 @@ namespace WebChecker.Tool
             }
 
             var mail = new MimeMessage();
-            mail.From.Add(new MailboxAddress("Porównywarka", "dawidtkd@gmail.com"));
-            mail.To.Add(new MailboxAddress("Porównywarka", "dawidtkd@gmail.com"));
-            mail.Subject = "Raport " + name;
+            mail.From.Add(new MailboxAddress("Porównywarka", "biuro@arante.pl"));
+            mail.To.Add(new MailboxAddress("Porównywarka", "biuro@arante.pl"));
+            mail.Subject = $"[Porównywarka] Raport {url}";
 
             var builder = new BodyBuilder { TextBody = message };
 
-            builder.Attachments.Add("raport", fileStream);
+            builder.Attachments.Add(name,filePath);
 
             mail.Body = builder.ToMessageBody();
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect(SmtpServer, SmtpPort, Ssl);
+                client.Authenticate(SmtpUsername, SmtpPassword);
+                client.Send(mail);
+            }
             //mail.Body = new TextPart("plain") { Text = message };
 
 

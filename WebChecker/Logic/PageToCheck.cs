@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using WebChecker.Annotations;
 using WebChecker.Database.Repository;
+using WebChecker.Logic;
+using WebChecker.Tool;
 
 namespace WebChecker.Model
 {
@@ -106,6 +108,10 @@ namespace WebChecker.Model
                 Status = StatusEnum.Zakończono;
                 var productRepository = new ProductRepository();
                 productRepository.SaveAll(Product);
+                var raport = new GeneratorReport(WebUrl);
+                raport.Generate();
+                var mail = new SendMail();
+                mail.SendReport(raport.GetShortMessage(), raport.Raport, raport.RaportName, WebUrl);
             });
         }
         private List<string> PrepareLink(IEnumerable<string> urlList)
