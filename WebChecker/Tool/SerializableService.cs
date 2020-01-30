@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -38,6 +39,8 @@ namespace WebChecker.Tool
 
         public T Deserialize()
         {
+            System.Threading.Semaphore semaphore = new System.Threading.Semaphore(1, 1);
+            semaphore.WaitOne();
             try
             {
                 T temp = default(T);
@@ -65,8 +68,13 @@ namespace WebChecker.Tool
             }
             catch(Exception e)
             {
-                Error.ShowError(e.Message);
+                Debug.WriteLine(e.Message);
+                //Error.ShowError(e.Message);
                 return default(T);
+            }
+            finally
+            {
+                semaphore.Release(1);
             }
         }
     }

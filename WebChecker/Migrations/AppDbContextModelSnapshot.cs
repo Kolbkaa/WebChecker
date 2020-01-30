@@ -31,11 +31,11 @@ namespace WebChecker.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Price");
-
-                    b.Property<string>("Test");
+                    b.Property<int?>("PriceId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PriceId");
 
                     b.ToTable("ProductEntity");
                 });
@@ -57,6 +57,28 @@ namespace WebChecker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WebsiteEntities");
+                });
+
+            modelBuilder.Entity("WebChecker.Model.Price", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("Dec");
+
+                    b.Property<int?>("Unity");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Price");
+                });
+
+            modelBuilder.Entity("WebChecker.Database.Entity.ProductEntity", b =>
+                {
+                    b.HasOne("WebChecker.Model.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId");
                 });
 #pragma warning restore 612, 618
         }

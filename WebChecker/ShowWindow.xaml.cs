@@ -32,14 +32,14 @@ namespace WebChecker
         private void ShowOneMonth_Click(object sender, RoutedEventArgs e)
         {
             var chartWindow = new ChartWindow();
-            chartWindow.ShowMonthChart((ProductGrid.SelectedItem as Product).Name);
+            chartWindow.ShowMonthChart((ProductGrid.SelectedItem as Product).Name, (ProductGrid.SelectedItem as Product).Link);
             chartWindow.ShowDialog();
         }
 
         private void ShowOneYear_Click(object sender, RoutedEventArgs e)
         {
             var chartWindow = new ChartWindow();
-            chartWindow.ShowYearChart((ProductGrid.SelectedItem as Product).Name);
+            chartWindow.ShowYearChart((ProductGrid.SelectedItem as Product).Name, (ProductGrid.SelectedItem as Product).Link);
             chartWindow.ShowDialog();
         }
 

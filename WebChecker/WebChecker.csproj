@@ -200,7 +200,12 @@
     <Compile Include="Migrations\20200110224118_init.designer.cs">
       <DependentUpon>20200110224118_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20200128121037_PriceClass.cs" />
+    <Compile Include="Migrations\20200128121037_PriceClass.designer.cs">
+      <DependentUpon>20200128121037_PriceClass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
+    <Compile Include="Model\Price.cs" />
     <Compile Include="Model\Website.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ShowWindow.xaml.cs">

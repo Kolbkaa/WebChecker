@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using WebChecker.Model;
@@ -20,6 +22,7 @@ namespace WebChecker
             _checkDate = DateTime.Now.Date;
 
             var web = new HtmlWeb();
+
             web.UserAgent =
                 "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11";
 
@@ -32,12 +35,12 @@ namespace WebChecker
             try
             {
                 _htmlDoc = web.Load(pageToCheck);
-            }
+                            }
             catch (Exception e)
             {
                 Debug.Print($"{e.Message}, { pageToCheck}");
             }
-            
+
         }
 
         public IEnumerable<string> FindLinkOnWeb()
@@ -54,7 +57,8 @@ namespace WebChecker
             var price = _htmlDoc?.DocumentNode?.SelectNodes(pricePrice)?.First().InnerText;
             var name = _htmlDoc?.DocumentNode?.SelectNodes(pathName)?.First().InnerText;
 
-            return (!string.IsNullOrWhiteSpace(price) && !string.IsNullOrWhiteSpace(name)) ? new Product(link, name.Trim(), price.Trim(),_checkDate) : null;
+            return (!string.IsNullOrWhiteSpace(price) && !string.IsNullOrWhiteSpace(name)) ? new Product(link, name.Trim(), price.Trim(), _checkDate) : null;
         }
+        
     }
 }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WebChecker.Annotations;
 using WebChecker.Database.Repository;
 using WebChecker.Logic;
@@ -62,50 +64,52 @@ namespace WebChecker.Model
         {
             await Task.Run(() =>
             {
-                Status = StatusEnum.Sprawdzanie;
-                do
-                {
-                    var link = _linkToCheck.Dequeue();
-                    OnPropertyChanged(nameof(LinkCheckedCount));
-                    OnPropertyChanged(nameof(AllLink));
-                    if (!_linkChecked.Contains(link))
-                    {
-                        var webCheck = new WebCheck(link);
-                        var linkList = webCheck.FindLinkOnWeb();
+                //Status = StatusEnum.Sprawdzanie;
+                //do
+                //{
+                //    var link = _linkToCheck.Dequeue();
+                //    OnPropertyChanged(nameof(LinkCheckedCount));
+                //    OnPropertyChanged(nameof(AllLink));
+                //    if (!_linkChecked.Contains(link))
+                //    {
+                                       
 
-                        if (linkList != null)
-                        {
-                            linkList = PrepareLink(linkList);
-                            foreach (var l in linkList.Where(l => !_linkChecked.Contains(l) && !_linkToCheck.Contains(l)))
-                            {
-                                _linkToCheck.Enqueue(l);
+                //        var webCheck = new WebCheck(link);
+                //        var linkList = webCheck.FindLinkOnWeb();
 
-                            }
-                            OnPropertyChanged(nameof(LinkToCheckCount));
-                            OnPropertyChanged(nameof(AllLink));
+                //        if (linkList != null)
+                //        {
+                //            linkList = PrepareLink(linkList);
+                //            foreach (var l in linkList.Where(l => !_linkChecked.Contains(l) && !_linkToCheck.Contains(l)))
+                //            {
+                //                _linkToCheck.Enqueue(l);
 
-                        }
+                //            }
+                //            OnPropertyChanged(nameof(LinkToCheckCount));
+                //            OnPropertyChanged(nameof(AllLink));
 
-                        var product = webCheck.FindProduct(_webNameProductPosition, _webPriceProductPosition, link);
+                //        }
 
-                        if (product != null)
-                        {
-                            if (!Product.Values.Any(x => x.Name == product.Name && x.Price == product.Price))
-                                Product.Add(link, product);
-                            OnPropertyChanged(nameof(ProductCount));
-                        }
+                //        var product = webCheck.FindProduct(_webNameProductPosition, _webPriceProductPosition, link);
 
-                    }
-                    _linkChecked.Add(link);
+                //        if (product != null)
+                //        {
+                //            if (!Product.Values.Any(x => x.Name == product.Name && x.Price == product.Price))
+                //                Product.Add(link, product);
+                //            OnPropertyChanged(nameof(ProductCount));
+                //        }
 
-                    OneLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
+                //    }
+                //    _linkChecked.Add(link);
+
+                //    OneLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
 
 
 
-                } while (_linkToCheck.Count > 0);
+                //} while (_linkToCheck.Count > 0);
 
-                AllLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
-                Status = StatusEnum.Zakończono;
+                //AllLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
+                //Status = StatusEnum.Zakończono;
                 var productRepository = new ProductRepository();
                 productRepository.SaveAll(Product);
                 var raport = new GeneratorReport(WebUrl);
@@ -125,7 +129,7 @@ namespace WebChecker.Model
                 {
                     var stringBuilder = new StringBuilder(WebUrl);
 
-               
+
                     stringBuilder.Append(newLink);
                     newLink = stringBuilder.ToString();
                 }

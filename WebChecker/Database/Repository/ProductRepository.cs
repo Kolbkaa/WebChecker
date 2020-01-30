@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -48,9 +49,9 @@ namespace WebChecker.Database.Repository
             {
                 using (var dbContext = new AppDbContext())
                 {
-                    var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url))?.ToList();
+                    var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url))?.Include(x => x.Price).ToList();
                     list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name,
-                        productEntity.Price, productEntity.CheckDate)));
+                        productEntity.Price.ToString(), productEntity.CheckDate)));
                 }
             }
             catch (SqlException e)
@@ -69,8 +70,8 @@ namespace WebChecker.Database.Repository
             {
                 using (var dbContext = new AppDbContext())
                 {
-                    var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.Name.Contains(name))?.ToList();
-                    list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
+                    var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.Name.Contains(name))?.Include(x => x.Price).ToList();
+                    list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price.ToString(), productEntity.CheckDate)));
                 }
             }
             catch (SqlException e)
@@ -86,8 +87,8 @@ namespace WebChecker.Database.Repository
             {
                 using (var dbContext = new AppDbContext())
                 {
-                    var products = dbContext.ProductEntity?.Where(x => x.Name.Equals(name))?.ToList();
-                    list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
+                    var products = dbContext.ProductEntity?.Where(x => x.Name.Equals(name))?.Include(x => x.Price).ToList();
+                    list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price.ToString(), productEntity.CheckDate)));
                 }
             }
             catch (SqlException e)
@@ -96,7 +97,7 @@ namespace WebChecker.Database.Repository
             }
             return list;
         }
-        public List<Product> GetProductsByNameFromYear(string name)
+        public List<Product> GetProductsByNameAndLinkFromYear(string name,string link)
         {
             var list = new List<Product>();
             try
@@ -105,8 +106,8 @@ namespace WebChecker.Database.Repository
                 var startDate = endDate.AddYears(-1);
                 using (var dbContext = new AppDbContext())
                 {
-                    var products = dbContext.ProductEntity?.Where(x => x.Name.Equals(name) && x.CheckDate >= startDate && x.CheckDate <= endDate)?.ToList();
-                    list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
+                    var products = dbContext.ProductEntity?.Where(x => x.Link.Equals(link) && x.Name.Equals(name) && x.CheckDate >= startDate && x.CheckDate <= endDate)?.Include(x => x.Price).ToList();
+                    list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price.ToString(), productEntity.CheckDate)));
                 }
             }
             catch (SqlException e)
@@ -115,7 +116,7 @@ namespace WebChecker.Database.Repository
             }
             return list;
         }
-        public List<Product> GetProductsByNameFromMonth(string name)
+        public List<Product> GetProductsByNameAndLinkFromMonth(string name, string link)
         {
             var list = new List<Product>();
             try
@@ -124,8 +125,8 @@ namespace WebChecker.Database.Repository
                 var startDate = endDate.AddMonths(-1);
                 using (var dbContext = new AppDbContext())
                 {
-                    var products = dbContext.ProductEntity?.Where(x => x.Name.Equals(name) && x.CheckDate >= startDate && x.CheckDate <= endDate)?.ToList();
-                    list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price, productEntity.CheckDate)));
+                    var products = dbContext.ProductEntity?.Where(x => x.Link.Equals(link) && x.Name.Equals(name) && x.CheckDate >= startDate && x.CheckDate <= endDate)?.Include(x => x.Price).ToList();
+                    list.AddRange(products.Select(productEntity => new Product(productEntity.Link, productEntity.Name, productEntity.Price.ToString(), productEntity.CheckDate)));
                 }
             }
             catch (SqlException e)
@@ -142,12 +143,12 @@ namespace WebChecker.Database.Repository
             {
                 using (var dbContext = new AppDbContext())
                 {
-                    var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.CheckDate == date)?.ToList();
+                    var products = dbContext.ProductEntity?.Where(x => x.Link.Contains(url) && x.CheckDate == date)?.Include(x => x.Price).ToList();
 
                     foreach (var product in products)
                     {
                         if (!dictionary.ContainsKey(product.Name))
-                            dictionary.Add(product.Name, new Product(product.Link, product.Name, product.Price, product.CheckDate));
+                            dictionary.Add(product.Name, new Product(product.Link, product.Name, product.Price.ToString(), product.CheckDate));
 
                     }
                 }

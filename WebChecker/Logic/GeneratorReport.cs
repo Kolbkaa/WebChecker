@@ -16,8 +16,8 @@ namespace WebChecker.Logic
         private int _earlierListCont = 0;
         private int _newProductCount = 0;
         private int _oldProductCont = 0;
-        private double _changeUpPercent = 0;
-        private double _changeDownPercent = 0;
+        private decimal _changeUpPercent = 0;
+        private decimal _changeDownPercent = 0;
         private readonly MemoryStream _ms;
         public MemoryStream Raport { get
             {
@@ -35,9 +35,9 @@ namespace WebChecker.Logic
 
         public GeneratorReport(string pagePath)
         {
-            
+
             _pageUrl = pagePath;
-            RaportName = pagePath.GetHashCode().ToString() + ".csv";
+            RaportName = $"{DateTime.Now.Year}{DateTime.Now.Month}{DateTime.Now.Day}.csv";
 
             _ms = new MemoryStream();
             _sw = new StreamWriter(_ms, Encoding.UTF8);
@@ -71,7 +71,7 @@ namespace WebChecker.Logic
             {
                 if (earlierList.ContainsKey(productFromActualList.Key))
                 {
-                    double changePercent = (1 - (double.Parse(earlierList[productFromActualList.Key].Price.Replace(".", ",")) / double.Parse(productFromActualList.Value.Price.Replace(".",",")))) * 100;
+                    decimal changePercent = (1 - (earlierList[productFromActualList.Key].Price.GetDecimal().Value / productFromActualList.Value.Price.GetDecimal().Value)) * 100;
                     
                     _sw.WriteLine($"\"{productFromActualList.Value.Link}\";\"{productFromActualList.Key}\";\"{earlierList[productFromActualList.Key].CheckDate}\";\"{earlierList[productFromActualList.Key].Price}\";\"{productFromActualList.Value.CheckDate}\";\"{productFromActualList.Value.Price}\";\"{changePercent}\"");
                     

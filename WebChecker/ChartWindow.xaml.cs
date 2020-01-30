@@ -37,14 +37,14 @@ namespace WebChecker
         {
 
 
-            MinPrice = list.Select(x => Convert.ToDecimal(x.Price.Replace(".", ","))).Min().ToString();
-            MaxPrice = list.Select(x => Convert.ToDecimal(x.Price.Replace(".", ","))).Max().ToString();
+            MinPrice = list.Select(x => x.Price.GetDecimal()).Min().ToString();
+            MaxPrice = list.Select(x => x.Price.GetDecimal()).Max().ToString();
             CalculateChangePercent(list);
             InitializeComponent();
             var lineSeries = new LineSeries();
             lineSeries.Title = name;
-            var chartValues = new ChartValues<double>();
-            chartValues.AddRange(list.Select(x => Convert.ToDouble(x.Price.Replace('.', ','))));
+            var chartValues = new ChartValues<decimal>();
+            chartValues.AddRange(list.Select(x => x.Price.GetDecimal().Value));
             lineSeries.Values = chartValues;
 
             SeriesCollection = new SeriesCollection();
@@ -65,23 +65,23 @@ namespace WebChecker
             var lastTwoPrice = list.OrderByDescending(x => x.CheckDate).Take(2).Select(x => x.Price).ToArray();
             if (lastTwoPrice.Length == 2)
             {
-                var priceOne = Convert.ToDecimal(lastTwoPrice[0].Replace(".", ","));
-                var priceTwo = Convert.ToDecimal(lastTwoPrice[1].Replace(".", ","));
-                ChangePercent = (((priceOne - priceTwo) / priceTwo)).ToString("p");
+                var priceOne = lastTwoPrice[0].GetDecimal();
+                var priceTwo = lastTwoPrice[1].GetDecimal();
+                ChangePercent = (((priceOne - priceTwo) / priceTwo)).Value.ToString("p");
                 return;
             }
 
             ChangePercent = "0%";
         }
 
-        public void ShowYearChart(string name)
+        public void ShowYearChart(string name, string link)
         {
-            var list = ProductRepository.GetProductsByNameFromYear(name);
+            var list = ProductRepository.GetProductsByNameAndLinkFromYear(name,link);
             PrepareChart(list, name);
         }
-        public void ShowMonthChart(string name)
+        public void ShowMonthChart(string name,string link)
         {
-            var list = ProductRepository.GetProductsByNameFromMonth(name);
+            var list = ProductRepository.GetProductsByNameAndLinkFromMonth(name,link);
             PrepareChart(list, name);
         }
 

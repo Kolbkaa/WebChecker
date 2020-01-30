@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebChecker.Database.Entity;
+using WebChecker.Model;
 using WebChecker.Properties;
 using WebChecker.Tool;
 using WebChecker.ViewModel;
@@ -46,6 +47,7 @@ namespace WebChecker.Database
             //optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=WebChecker;Integrated Security=True");
             optionsBuilder.UseSqlServer($@"Data Source={_ipSqlServer}\{_nameSqlSever};Initial Catalog=WebChecker;User Id={_loginSqlServer};Password={_passSqlServer};");
         }
+     
 
         //public void CreateDb()
         //{
@@ -73,5 +75,6 @@ namespace WebChecker.Database
 
         public DbSet<WebsiteEntity> WebsiteEntities { get; set; }
         public DbSet<ProductEntity> ProductEntity { get; set; }
+        //public DbSet<Price> PriceEntities { get; set; }
     }
 }
