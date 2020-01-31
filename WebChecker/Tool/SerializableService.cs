@@ -11,7 +11,7 @@ namespace WebChecker.Tool
 {
     public class SerializableService<T>
     {
-        private readonly string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WebChecker\\conf.cfg");
+        private readonly string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "conf2.cfg");
         public void Serialize(T obj)
         {
             try

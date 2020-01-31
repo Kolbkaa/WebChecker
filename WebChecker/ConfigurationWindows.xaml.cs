@@ -33,6 +33,10 @@ namespace WebChecker
             var serializableService = new SerializableService<ConfigurationViewModel>();
 
             _configurationViewModel = serializableService.Deserialize();
+            if (_configurationViewModel == null)
+            {
+                _configurationViewModel = new ConfigurationViewModel();
+            }
             this.DataContext = _configurationViewModel;
             InitializeComponent();
         }
@@ -59,7 +63,7 @@ namespace WebChecker
             {
                 isConnection = false;
             }
-            
+
 
             if (isConnection)
             {
