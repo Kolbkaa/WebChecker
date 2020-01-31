@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace WebChecker.Tool
 {
-    public  class SerializableService<T>
+    public class SerializableService<T>
     {
-        private readonly string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"WebChecker\\conf.cfg");
+        private readonly string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WebChecker\\conf.cfg");
         public void Serialize(T obj)
         {
             try
@@ -30,7 +30,7 @@ namespace WebChecker.Tool
 
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Error.ShowError(e.Message);
             }
@@ -39,8 +39,8 @@ namespace WebChecker.Tool
 
         public T Deserialize()
         {
-            System.Threading.Semaphore semaphore = new System.Threading.Semaphore(1, 1);
-            semaphore.WaitOne();
+
+            Debug.WriteLine("Wejscie");
             try
             {
                 T temp = default(T);
@@ -66,7 +66,7 @@ namespace WebChecker.Tool
 
                 return temp;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 //Error.ShowError(e.Message);
@@ -74,7 +74,7 @@ namespace WebChecker.Tool
             }
             finally
             {
-                semaphore.Release(1);
+                Debug.WriteLine("Wyjscie");
             }
         }
     }

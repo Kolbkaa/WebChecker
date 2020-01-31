@@ -22,8 +22,13 @@ namespace WebChecker.Database
         public AppDbContext()
         {
             var SerializableService = new SerializableService<ConfigurationViewModel>();
-            var conf = SerializableService.Deserialize();
-            if(conf != null)
+            ConfigurationViewModel conf;
+            lock (typeof(AppDbContext))
+            {
+                 conf = SerializableService.Deserialize();
+            }
+
+            if (conf != null)
             {
                 _ipSqlServer = conf.IpSqlServer;
                 _nameSqlSever = conf.NameSqlServer;
@@ -32,22 +37,22 @@ namespace WebChecker.Database
                 return;
             }
 
-            _ipSqlServer = Settings.Default.ipSqlServer;
-            _nameSqlSever = Settings.Default.nameSqlServer;
-            _loginSqlServer = Settings.Default.loginSqlServer;
-            _passSqlServer = Settings.Default.passSqlServer;
+            //_ipSqlServer = Settings.Default.ipSqlServer;
+            //_nameSqlSever = Settings.Default.nameSqlServer;
+            //_loginSqlServer = Settings.Default.loginSqlServer;
+            //_passSqlServer = Settings.Default.passSqlServer;
         }
 
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+
 
             base.OnConfiguring(optionsBuilder);
             //optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=WebChecker;Integrated Security=True");
             optionsBuilder.UseSqlServer($@"Data Source={_ipSqlServer}\{_nameSqlSever};Initial Catalog=WebChecker;User Id={_loginSqlServer};Password={_passSqlServer};");
         }
-     
+
 
         //public void CreateDb()
         //{
@@ -70,7 +75,7 @@ namespace WebChecker.Database
                 return dbContext.Database.CanConnect();
             }
 
-            
+
         }
 
         public DbSet<WebsiteEntity> WebsiteEntities { get; set; }

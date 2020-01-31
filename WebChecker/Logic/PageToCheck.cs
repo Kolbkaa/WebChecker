@@ -64,52 +64,52 @@ namespace WebChecker.Model
         {
             await Task.Run(() =>
             {
-                //Status = StatusEnum.Sprawdzanie;
-                //do
-                //{
-                //    var link = _linkToCheck.Dequeue();
-                //    OnPropertyChanged(nameof(LinkCheckedCount));
-                //    OnPropertyChanged(nameof(AllLink));
-                //    if (!_linkChecked.Contains(link))
-                //    {
-                                       
-
-                //        var webCheck = new WebCheck(link);
-                //        var linkList = webCheck.FindLinkOnWeb();
-
-                //        if (linkList != null)
-                //        {
-                //            linkList = PrepareLink(linkList);
-                //            foreach (var l in linkList.Where(l => !_linkChecked.Contains(l) && !_linkToCheck.Contains(l)))
-                //            {
-                //                _linkToCheck.Enqueue(l);
-
-                //            }
-                //            OnPropertyChanged(nameof(LinkToCheckCount));
-                //            OnPropertyChanged(nameof(AllLink));
-
-                //        }
-
-                //        var product = webCheck.FindProduct(_webNameProductPosition, _webPriceProductPosition, link);
-
-                //        if (product != null)
-                //        {
-                //            if (!Product.Values.Any(x => x.Name == product.Name && x.Price == product.Price))
-                //                Product.Add(link, product);
-                //            OnPropertyChanged(nameof(ProductCount));
-                //        }
-
-                //    }
-                //    _linkChecked.Add(link);
-
-                //    OneLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
+                Status = StatusEnum.Sprawdzanie;
+                do
+                {
+                    var link = _linkToCheck.Dequeue();
+                    OnPropertyChanged(nameof(LinkCheckedCount));
+                    OnPropertyChanged(nameof(AllLink));
+                    if (!_linkChecked.Contains(link))
+                    {
 
 
+                        var webCheck = new WebCheck(link);
+                        var linkList = webCheck.FindLinkOnWeb();
 
-                //} while (_linkToCheck.Count > 0);
+                        if (linkList != null)
+                        {
+                            linkList = PrepareLink(linkList);
+                            foreach (var l in linkList.Where(l => !_linkChecked.Contains(l) && !_linkToCheck.Contains(l)))
+                            {
+                                _linkToCheck.Enqueue(l);
 
-                //AllLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
-                //Status = StatusEnum.Zakończono;
+                            }
+                            OnPropertyChanged(nameof(LinkToCheckCount));
+                            OnPropertyChanged(nameof(AllLink));
+
+                        }
+
+                        var product = webCheck.FindProduct(_webNameProductPosition, _webPriceProductPosition, link);
+
+                        if (product != null)
+                        {
+                            if (!Product.Values.Any(x => x.Name == product.Name && x.Price == product.Price))
+                                Product.Add(link, product);
+                            OnPropertyChanged(nameof(ProductCount));
+                        }
+
+                    }
+                    _linkChecked.Add(link);
+
+                    OneLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
+
+
+
+                } while (_linkToCheck.Count > 0);
+
+                AllLinkCheck?.Invoke(Product.Count, _linkChecked.Count, _linkToCheck.Count, WebUrl);
+                Status = StatusEnum.Zakończono;
                 var productRepository = new ProductRepository();
                 productRepository.SaveAll(Product);
                 var raport = new GeneratorReport(WebUrl);

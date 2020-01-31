@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +25,8 @@ namespace WebChecker.Database.Repository
             }
             catch (SqlException e)
             {
-                Error.ShowError(e.Message);
+                //Error.ShowError(e.Message);
+                Debug.WriteLine(e.Message);
             }
             return dateTimes;
         }

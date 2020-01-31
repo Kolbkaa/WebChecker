@@ -71,8 +71,10 @@ namespace WebChecker.Logic
             {
                 if (earlierList.ContainsKey(productFromActualList.Key))
                 {
-                    decimal changePercent = (1 - (earlierList[productFromActualList.Key].Price.GetDecimal().Value / productFromActualList.Value.Price.GetDecimal().Value)) * 100;
-                    
+                    //dzielenie przez zero
+                    //decimal changePercent = (1 - (earlierList[productFromActualList.Key].Price.GetDecimal().Value / productFromActualList.Value.Price.GetDecimal().Value)) * 100;
+                    var changePercent = CountChangePercent(earlierList[productFromActualList.Key].Price.GetDecimal().Value, productFromActualList.Value.Price.GetDecimal().Value);
+
                     _sw.WriteLine($"\"{productFromActualList.Value.Link}\";\"{productFromActualList.Key}\";\"{earlierList[productFromActualList.Key].CheckDate}\";\"{earlierList[productFromActualList.Key].Price}\";\"{productFromActualList.Value.CheckDate}\";\"{productFromActualList.Value.Price}\";\"{changePercent}\"");
                     
                     if(_changeUpPercent < changePercent)
@@ -103,6 +105,14 @@ namespace WebChecker.Logic
             _newProductCount = tempActualList.Count;
             _oldProductCont = tempEarlierList.Count;
             
+        }
+        private decimal CountChangePercent(decimal number1, decimal number2)
+        {
+            if(number2 == 0)
+            {
+                return 0m;
+            }
+            return (1 - (number1 / number2)) * 100;
         }
      
         public string GetShortMessage()
